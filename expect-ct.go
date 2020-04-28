@@ -57,7 +57,7 @@ func (ect *ExpectCT) String() string {
 	return ect.cache
 }
 
-// Exists returns whether the Expect CT has been set.
+// Exists returns whether the ExpectCT has been set.
 func (ect *ExpectCT) Exists() bool {
 	if ect.MaxAge == 0 {
 		// enfore and report-uri are optional
