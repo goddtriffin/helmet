@@ -4,24 +4,12 @@ import (
 	"net/http"
 )
 
-// HeaderPermittedCrossDomainPolicies is the Permitted Cross Domain Policies HTTP header.
-const HeaderPermittedCrossDomainPolicies = "X-Permitted-Cross-Domain-Policies"
-
-// Permitted Cross Domain Policies options.
-const (
-	PermittedCrossDomainPoliciesNone          = "none"
-	PermittedCrossDomainPoliciesMasterOnly    = "master-only"
-	PermittedCrossDomainPoliciesByContentType = "by-content-type"
-	PermittedCrossDomainPoliciesByFTPFilename = "by-ftp-filename"
-	PermittedCrossDomainPoliciesAll           = "all"
-)
-
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
 type Helmet struct {
 	ContentSecurityPolicy        *ContentSecurityPolicy
 	DNSPrefetchControl           DNSPrefetchControl
 	ExpectCT                     *ExpectCT
-	PermittedCrossDomainPolicies string
+	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
 }
 
 // New creates a new Helmet.
@@ -48,10 +36,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.ContentSecurityPolicy.AddHeader(w)
 		h.DNSPrefetchControl.AddHeader(w)
 		h.ExpectCT.AddHeader(w)
-
-		if len(h.PermittedCrossDomainPolicies) != 0 {
-			w.Header().Set(HeaderPermittedCrossDomainPolicies, h.PermittedCrossDomainPolicies)
-		}
+		h.PermittedCrossDomainPolicies.AddHeader(w)
 
 		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		// w.Header().Set("X-Content-Type-Options", "nosniff")
