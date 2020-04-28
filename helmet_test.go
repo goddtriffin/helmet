@@ -83,7 +83,7 @@ func TestSecure_default(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, ""},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOff},
+		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesNone},
 	}
@@ -144,7 +144,7 @@ func TestSecure_custom(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, "default-src 'none';"},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOn},
+		{HeaderDNSPrefetchControl, DNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll},
 	}

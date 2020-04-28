@@ -4,17 +4,8 @@ import (
 	"net/http"
 )
 
-// HeaderDNSPrefetchControl is the DNS Prefetch Control HTTP header.
-const HeaderDNSPrefetchControl = "X-DNS-Prefetch-Control"
-
 // HeaderPermittedCrossDomainPolicies is the Permitted Cross Domain Policies HTTP header.
 const HeaderPermittedCrossDomainPolicies = "X-Permitted-Cross-Domain-Policies"
-
-// DNS Prefetch Control options.
-const (
-	DNSPrefetchControlOn  = "on"
-	DNSPrefetchControlOff = "off"
-)
 
 // Permitted Cross Domain Policies options.
 const (
@@ -28,7 +19,7 @@ const (
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
 type Helmet struct {
 	ContentSecurityPolicy        *ContentSecurityPolicy
-	DNSPrefetchControl           string
+	DNSPrefetchControl           DNSPrefetchControl
 	ExpectCT                     *ExpectCT
 	PermittedCrossDomainPolicies string
 }
@@ -55,11 +46,7 @@ func Default() *Helmet {
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ContentSecurityPolicy.AddHeader(w)
-
-		if len(h.DNSPrefetchControl) != 0 {
-			w.Header().Set(HeaderDNSPrefetchControl, h.DNSPrefetchControl)
-		}
-
+		h.DNSPrefetchControl.AddHeader(w)
 		h.ExpectCT.AddHeader(w)
 
 		if len(h.PermittedCrossDomainPolicies) != 0 {
