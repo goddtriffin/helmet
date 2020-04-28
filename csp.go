@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// HeaderContentSecurityPolicy is the Content Security Policy HTTP header.
+// HeaderContentSecurityPolicy is the Content Security Policy HTTP security header.
 const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
 // List of all Content Security Policy directives.
@@ -95,7 +95,7 @@ const (
 	TrustedTypesAllowDuplicates = "allow-duplicates"
 )
 
-// ContentSecurityPolicy is the Content-Security-Policy HTTP security header.
+// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
 type ContentSecurityPolicy struct {
 	policies map[string][]string
 

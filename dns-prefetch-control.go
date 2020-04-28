@@ -11,7 +11,7 @@ const (
 	DNSPrefetchControlOff DNSPrefetchControl = "off"
 )
 
-// DNSPrefetchControl is the X-DNS-Prefetch-Control HTTP security header.
+// DNSPrefetchControl represents the X-DNS-Prefetch-Control HTTP security header.
 type DNSPrefetchControl string
 
 func (dns DNSPrefetchControl) String() string {
@@ -19,7 +19,7 @@ func (dns DNSPrefetchControl) String() string {
 }
 
 // Exists returns whether the DNSPrefetchControl has been set.
-func (dns *DNSPrefetchControl) Exists() bool {
+func (dns DNSPrefetchControl) Exists() bool {
 	if dns.String() == "" {
 		return false
 	}
@@ -28,7 +28,7 @@ func (dns *DNSPrefetchControl) Exists() bool {
 }
 
 // AddHeader adds the X-DNS-Prefetch-Control HTTP header to the given ResponseWriter.
-func (dns *DNSPrefetchControl) AddHeader(w http.ResponseWriter) {
+func (dns DNSPrefetchControl) AddHeader(w http.ResponseWriter) {
 	if dns.Exists() {
 		w.Header().Set(HeaderDNSPrefetchControl, dns.String())
 	}

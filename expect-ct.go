@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-// HeaderExpectCT is the Expect-CT HTTP header.
+// HeaderExpectCT is the Expect-CT HTTP security header.
 const HeaderExpectCT = "Expect-CT"
 
-// ExpectCT is the Expect-CT HTTP security header.
+// ExpectCT represents the Expect-CT HTTP security header.
 type ExpectCT struct {
 	Enforce   bool   // controls whether the browser should enforce the policy or treat it as report-only mode
 	MaxAge    int    // number of seconds that the browser should cache and apply the received policy for
