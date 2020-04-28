@@ -12,8 +12,8 @@ type Helmet struct {
 	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
 }
 
-// New creates a new Helmet.
-func New() *Helmet {
+// Empty creates a new Helmet.
+func Empty() *Helmet {
 	return &Helmet{
 		ContentSecurityPolicy: EmptyCSP(),
 		ExpectCT:              EmptyExpectCT(),

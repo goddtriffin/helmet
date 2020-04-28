@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestSecure_new(t *testing.T) {
+func TestHelmet_Secure_empty(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -21,7 +21,7 @@ func TestSecure_new(t *testing.T) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := New()
+	helmet := Empty()
 	helmet.Secure(next).ServeHTTP(rr, r)
 	resp := rr.Result()
 
@@ -60,7 +60,7 @@ func TestSecure_new(t *testing.T) {
 	}
 }
 
-func TestSecure_default(t *testing.T) {
+func TestHelmet_Secure_default(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -116,7 +116,7 @@ func TestSecure_default(t *testing.T) {
 	}
 }
 
-func TestSecure_custom(t *testing.T) {
+func TestHelmet_Secure_custom(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -130,8 +130,10 @@ func TestSecure_custom(t *testing.T) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := New()
-	helmet.ContentSecurityPolicy.Add(DirectiveDefaultSrc, SourceNone)
+	helmet := Empty()
+	helmet.ContentSecurityPolicy = NewCSP(map[string][]string{
+		DirectiveDefaultSrc: {SourceNone},
+	})
 	helmet.DNSPrefetchControl = DNSPrefetchControlOn
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
