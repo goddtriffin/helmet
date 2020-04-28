@@ -102,8 +102,8 @@ type ContentSecurityPolicy struct {
 	cache string
 }
 
-// NewCSP creates a new ContentSecurityPolicy.
-func NewCSP(policies map[string][]string) *ContentSecurityPolicy {
+// NewContentSecurityPolicy creates a new ContentSecurityPolicy.
+func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPolicy {
 	csp := &ContentSecurityPolicy{}
 
 	if policies != nil {
@@ -115,9 +115,9 @@ func NewCSP(policies map[string][]string) *ContentSecurityPolicy {
 	return csp
 }
 
-// EmptyCSP creates a blank slate ContentSecurityPolicy.
-func EmptyCSP() *ContentSecurityPolicy {
-	return NewCSP(make(map[string][]string))
+// EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.
+func EmptyContentSecurityPolicy() *ContentSecurityPolicy {
+	return NewContentSecurityPolicy(make(map[string][]string))
 }
 
 // Add adds a directive and its sources.

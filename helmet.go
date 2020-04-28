@@ -15,7 +15,7 @@ type Helmet struct {
 // Empty creates a new Helmet.
 func Empty() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy: EmptyCSP(),
+		ContentSecurityPolicy: EmptyContentSecurityPolicy(),
 		ExpectCT:              EmptyExpectCT(),
 	}
 }
@@ -23,10 +23,10 @@ func Empty() *Helmet {
 // Default creates a new Helmet with default settings.
 func Default() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy:        EmptyCSP(),
-		DNSPrefetchControl:           DNSPrefetchControlOff,
+		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
+		DNSPrefetchControl:           "",
 		ExpectCT:                     EmptyExpectCT(),
-		PermittedCrossDomainPolicies: PermittedCrossDomainPoliciesNone,
+		PermittedCrossDomainPolicies: "",
 	}
 }
 
