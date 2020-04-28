@@ -2,8 +2,12 @@ package helmet
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 )
+
+// HeaderContentSecurityPolicy is the Content Security Policy HTTP header.
+const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
 // List of all Content Security Policy directives.
 const (
@@ -94,11 +98,12 @@ const (
 // ContentSecurityPolicy is the Content-Security-Policy HTTP security header.
 type ContentSecurityPolicy struct {
 	policies map[string][]string
-	cache    string
+
+	cache string
 }
 
-// NewContentSecurityPolicy creates a new ContentSecurityPolicy.
-func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPolicy {
+// NewCSP creates a new ContentSecurityPolicy.
+func NewCSP(policies map[string][]string) *ContentSecurityPolicy {
 	csp := &ContentSecurityPolicy{}
 
 	if policies != nil {
@@ -108,6 +113,11 @@ func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPoli
 	}
 
 	return csp
+}
+
+// EmptyCSP creates a blank slate ContentSecurityPolicy.
+func EmptyCSP() *ContentSecurityPolicy {
+	return NewCSP(make(map[string][]string))
 }
 
 // Add adds a directive and its sources.
@@ -157,7 +167,7 @@ func (csp *ContentSecurityPolicy) String() string {
 	}
 
 	csp.cache = builder
-	return builder
+	return csp.cache
 }
 
 // Exists returns whether the Content Security Policy contains any policies.
@@ -167,4 +177,11 @@ func (csp *ContentSecurityPolicy) Exists() bool {
 	}
 
 	return true
+}
+
+// AddHeader adds the Content Security Policy HTTP header to the given ResponseWriter.
+func (csp *ContentSecurityPolicy) AddHeader(w http.ResponseWriter) {
+	if csp.Exists() {
+		w.Header().Set(HeaderContentSecurityPolicy, csp.String())
+	}
 }

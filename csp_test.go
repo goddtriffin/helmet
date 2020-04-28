@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
+func TestCSP_Add(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -15,8 +15,8 @@ func TestAdd(t *testing.T) {
 		sources    []string
 		expectedOk bool
 	}{
-		{name: DirectiveDefaultSrc, directive: DirectiveDefaultSrc, sources: []string{SourceNone}, expectedOk: true},
 		{name: "Empty", directive: "", expectedOk: false},
+		{name: "Default Directive", directive: DirectiveDefaultSrc, sources: []string{SourceNone}, expectedOk: true},
 		{name: "No Sources", directive: DirectiveDefaultSrc, sources: []string{}, expectedOk: true},
 	}
 
@@ -25,7 +25,7 @@ func TestAdd(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			csp := NewContentSecurityPolicy(nil)
+			csp := EmptyCSP()
 			csp.Add(tc.directive, tc.sources...)
 
 			// make sure directive is now in CSP policies
@@ -48,7 +48,7 @@ func TestAdd(t *testing.T) {
 	}
 }
 
-func TestCreate(t *testing.T) {
+func TestCSP_Create(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -56,8 +56,8 @@ func TestCreate(t *testing.T) {
 		directive  string
 		expectedOk bool
 	}{
-		{name: DirectiveDefaultSrc, directive: DirectiveDefaultSrc, expectedOk: true},
 		{name: "Empty", directive: "", expectedOk: false},
+		{name: "Default Directive", directive: DirectiveDefaultSrc, expectedOk: true},
 		{name: "Random Directive", directive: "test", expectedOk: true},
 	}
 
@@ -66,7 +66,7 @@ func TestCreate(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			csp := NewContentSecurityPolicy(nil)
+			csp := EmptyCSP()
 			csp.create(tc.directive)
 
 			// make sure directive is now in CSP policies
@@ -77,7 +77,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestString(t *testing.T) {
+func TestCSP_String(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -85,33 +85,25 @@ func TestString(t *testing.T) {
 		csp              *ContentSecurityPolicy
 		expectedPolicies []string
 	}{
+		{name: "Empty", csp: EmptyCSP(), expectedPolicies: []string{}},
+		{name: "Nil", csp: NewCSP(nil), expectedPolicies: []string{}},
 		{
-			name: DirectiveDefaultSrc,
-			csp: NewContentSecurityPolicy(map[string][]string{
+			name: "Single Directive",
+			csp: NewCSP(map[string][]string{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveDefaultSrc, SourceNone)},
 		},
 		{
-			name:             "Empty",
-			csp:              NewContentSecurityPolicy(make(map[string][]string)),
-			expectedPolicies: []string{},
-		},
-		{
-			name:             "Nil",
-			csp:              NewContentSecurityPolicy(nil),
-			expectedPolicies: []string{},
-		},
-		{
-			name: "No Sources",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			name: "Single Directive, No Sources",
+			csp: NewCSP(map[string][]string{
 				DirectiveUpgradeInsecureRequests: {},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s;", DirectiveUpgradeInsecureRequests)},
 		},
 		{
 			name: "Multiple Directives",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			csp: NewCSP(map[string][]string{
 				DirectiveDefaultSrc:              {SourceNone},
 				DirectiveUpgradeInsecureRequests: {},
 			}),
@@ -151,7 +143,7 @@ func TestString(t *testing.T) {
 	}
 }
 
-func TestExists(t *testing.T) {
+func TestCSP_Exists(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -159,22 +151,14 @@ func TestExists(t *testing.T) {
 		csp            *ContentSecurityPolicy
 		expectedExists bool
 	}{
+		{name: "Empty", csp: EmptyCSP(), expectedExists: false},
+		{name: "Nil", csp: NewCSP(nil), expectedExists: false},
 		{
-			name: DirectiveDefaultSrc,
-			csp: NewContentSecurityPolicy(map[string][]string{
+			name: "Single Directive",
+			csp: NewCSP(map[string][]string{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedExists: true,
-		},
-		{
-			name:           "Empty",
-			csp:            NewContentSecurityPolicy(make(map[string][]string)),
-			expectedExists: false,
-		},
-		{
-			name:           "Nil",
-			csp:            NewContentSecurityPolicy(nil),
-			expectedExists: false,
 		},
 	}
 

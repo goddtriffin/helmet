@@ -4,6 +4,12 @@ import (
 	"net/http"
 )
 
+// HeaderDNSPrefetchControl is the DNS Prefetch Control HTTP header.
+const HeaderDNSPrefetchControl = "X-DNS-Prefetch-Control"
+
+// HeaderPermittedCrossDomainPolicies is the Permitted Cross Domain Policies HTTP header.
+const HeaderPermittedCrossDomainPolicies = "X-Permitted-Cross-Domain-Policies"
+
 // DNS Prefetch Control options.
 const (
 	DNSPrefetchControlOn  = "on"
@@ -23,23 +29,24 @@ const (
 type Helmet struct {
 	ContentSecurityPolicy        *ContentSecurityPolicy
 	DNSPrefetchControl           string
+	ExpectCT                     *ExpectCT
 	PermittedCrossDomainPolicies string
 }
 
 // New creates a new Helmet.
 func New() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy:        NewContentSecurityPolicy(nil),
-		DNSPrefetchControl:           DNSPrefetchControlOn,
-		PermittedCrossDomainPolicies: PermittedCrossDomainPoliciesAll,
+		ContentSecurityPolicy: EmptyCSP(),
+		ExpectCT:              EmptyExpectCT(),
 	}
 }
 
 // Default creates a new Helmet with default settings.
 func Default() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy:        NewContentSecurityPolicy(nil),
+		ContentSecurityPolicy:        EmptyCSP(),
 		DNSPrefetchControl:           DNSPrefetchControlOff,
+		ExpectCT:                     EmptyExpectCT(),
 		PermittedCrossDomainPolicies: PermittedCrossDomainPoliciesNone,
 	}
 }
@@ -47,12 +54,17 @@ func Default() *Helmet {
 // Secure is the middleware handler.
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if h.ContentSecurityPolicy.Exists() {
-			w.Header().Set("Content-Security-Policy", h.ContentSecurityPolicy.String())
+		h.ContentSecurityPolicy.AddHeader(w)
+
+		if len(h.DNSPrefetchControl) != 0 {
+			w.Header().Set(HeaderDNSPrefetchControl, h.DNSPrefetchControl)
 		}
 
-		w.Header().Set("X-DNS-Prefetch-Control", h.DNSPrefetchControl)
-		w.Header().Set("X-Permitted-Cross-Domain-Policies", h.PermittedCrossDomainPolicies)
+		h.ExpectCT.AddHeader(w)
+
+		if len(h.PermittedCrossDomainPolicies) != 0 {
+			w.Header().Set(HeaderPermittedCrossDomainPolicies, h.PermittedCrossDomainPolicies)
+		}
 
 		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		// w.Header().Set("X-Content-Type-Options", "nosniff")
