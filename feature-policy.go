@@ -2,6 +2,7 @@ package helmet
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -140,4 +141,20 @@ func (fp *FeaturePolicy) String() string {
 
 	fp.cache = strings.Join(policies, "; ")
 	return fp.cache
+}
+
+// Exists returns whether the FeaturePolicy contains any policies.
+func (fp *FeaturePolicy) Exists() bool {
+	if len(fp.policies) == 0 {
+		return false
+	}
+
+	return true
+}
+
+// AddHeader adds the FeaturePolicy HTTP header to the given ResponseWriter.
+func (fp *FeaturePolicy) AddHeader(w http.ResponseWriter) {
+	if fp.Exists() {
+		w.Header().Set(HeaderContentSecurityPolicy, fp.String())
+	}
 }

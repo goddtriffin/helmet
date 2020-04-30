@@ -274,3 +274,35 @@ func TestFeaturePolicy_String(t *testing.T) {
 		})
 	}
 }
+
+func TestFeaturePolicy_Exists(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name           string
+		fp             *FeaturePolicy
+		expectedExists bool
+	}{
+		{name: "Empty", fp: EmptyFeaturePolicy(), expectedExists: false},
+		{name: "Nil", fp: NewFeaturePolicy(nil), expectedExists: false},
+		{
+			name: "Single Directive",
+			fp: NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
+				DirectiveMicrophone: {OriginNone},
+			}),
+			expectedExists: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			exists := tc.fp.Exists()
+			if exists != tc.expectedExists {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			}
+		})
+	}
+}
