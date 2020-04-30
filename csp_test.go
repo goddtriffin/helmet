@@ -21,6 +21,10 @@ func TestContentSecurityPolicy_New(t *testing.T) {
 		if len(csp.policies) != 0 {
 			t.Errorf("There should be zero policies/sources\n")
 		}
+
+		if csp.cache != "" {
+			t.Errorf("Cache should not be set\tActual: %s\n", csp.cache)
+		}
 	})
 
 	testCases := []struct {
@@ -84,6 +88,10 @@ func TestContentSecurityPolicy_Empty(t *testing.T) {
 
 	if len(csp.policies) != 0 {
 		t.Errorf("There should be zero policies/sources\n")
+	}
+
+	if csp.cache != "" {
+		t.Errorf("Cache should not be set\tActual: %s\n", csp.cache)
 	}
 }
 

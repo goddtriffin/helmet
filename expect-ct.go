@@ -11,8 +11,8 @@ const HeaderExpectCT = "Expect-CT"
 
 // ExpectCT represents the Expect-CT HTTP security header.
 type ExpectCT struct {
-	Enforce   bool   // controls whether the browser should enforce the policy or treat it as report-only mode
 	MaxAge    int    // number of seconds that the browser should cache and apply the received policy for
+	Enforce   bool   // controls whether the browser should enforce the policy or treat it as report-only mode
 	ReportURI string // specifies where the browser should send reports if it does not receive valid CT information
 
 	cache string
