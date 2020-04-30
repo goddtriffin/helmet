@@ -172,25 +172,21 @@ func (csp *ContentSecurityPolicy) String() string {
 		return csp.cache
 	}
 
-	var builder string
+	var policies = []string{}
 	for directive, sources := range csp.policies {
-		if len(builder) != 0 {
-			builder += " "
-		}
-
 		if len(sources) == 0 {
-			builder += fmt.Sprintf("%s;", directive)
-			continue
-		}
+			policies = append(policies, fmt.Sprintf("%s;", directive))
+		} else {
+			sourcesAsStrings := []string{}
+			for _, source := range sources {
+				sourcesAsStrings = append(sourcesAsStrings, string(source))
+			}
 
-		sourcesAsStrings := []string{}
-		for _, source := range sources {
-			sourcesAsStrings = append(sourcesAsStrings, string(source))
+			policies = append(policies, fmt.Sprintf("%s %s;", directive, strings.Join(sourcesAsStrings, " ")))
 		}
-		builder += fmt.Sprintf("%s %s;", directive, strings.Join(sourcesAsStrings, " "))
 	}
 
-	csp.cache = builder
+	csp.cache = strings.Join(policies, "; ")
 	return csp.cache
 }
 
