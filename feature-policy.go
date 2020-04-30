@@ -73,3 +73,46 @@ func NewFeaturePolicy(policies map[FeaturePolicyDirective][]FeaturePolicyOrigin)
 func EmptyFeaturePolicy() *FeaturePolicy {
 	return NewFeaturePolicy(make(map[FeaturePolicyDirective][]FeaturePolicyOrigin))
 }
+
+// Add adds a directive and its origins.
+func (fp *FeaturePolicy) Add(directive FeaturePolicyDirective, origins ...FeaturePolicyOrigin) {
+	if len(directive) == 0 {
+		return
+	}
+	fp.cache = ""
+
+	fp.create(directive)
+	for _, origin := range origins {
+		fp.policies[directive] = append(fp.policies[directive], origin)
+	}
+}
+
+func (fp *FeaturePolicy) create(directive FeaturePolicyDirective) {
+	if len(directive) == 0 {
+		return
+	}
+	fp.cache = ""
+
+	if _, ok := fp.policies[directive]; !ok {
+		fp.policies[directive] = []FeaturePolicyOrigin{}
+	}
+}
+
+// Remove removes a directive and its origins.
+func (fp *FeaturePolicy) Remove(directives ...FeaturePolicyDirective) {
+	if len(directives) == 0 {
+		return
+	}
+
+	didRemove := false
+	for _, directive := range directives {
+		if _, ok := fp.policies[directive]; ok {
+			didRemove = true
+			delete(fp.policies, directive)
+		}
+	}
+
+	if didRemove {
+		fp.cache = ""
+	}
+}
