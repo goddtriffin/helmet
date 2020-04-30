@@ -29,17 +29,17 @@ func TestContentSecurityPolicy_New(t *testing.T) {
 
 	testCases := []struct {
 		name     string
-		policies map[CSPDirective][]string
+		policies map[CSPDirective][]CSPSource
 	}{
 		{
 			name: "Single Directive",
-			policies: map[CSPDirective][]string{
+			policies: map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			},
 		},
 		{
 			name: "Multiple Directives",
-			policies: map[CSPDirective][]string{
+			policies: map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 				DirectiveScriptSrc:  {SourceSelf, SourceUnsafeInline},
 			},
@@ -101,12 +101,12 @@ func TestCSP_Add(t *testing.T) {
 	testCases := []struct {
 		name       string
 		directive  CSPDirective
-		sources    []string
+		sources    []CSPSource
 		expectedOk bool
 	}{
 		{name: "Empty", directive: "", expectedOk: false},
-		{name: "Default Directive", directive: DirectiveDefaultSrc, sources: []string{SourceNone}, expectedOk: true},
-		{name: "No Sources", directive: DirectiveDefaultSrc, sources: []string{}, expectedOk: true},
+		{name: "Default Directive", directive: DirectiveDefaultSrc, sources: []CSPSource{SourceNone}, expectedOk: true},
+		{name: "No Sources", directive: DirectiveDefaultSrc, sources: []CSPSource{}, expectedOk: true},
 	}
 
 	for _, tc := range testCases {
@@ -177,14 +177,14 @@ func TestCSP_Remove(t *testing.T) {
 		{name: "Empty", csp: EmptyContentSecurityPolicy(), directives: []CSPDirective{}},
 		{
 			name: "Single Directive",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			directives: []CSPDirective{DirectiveDefaultSrc},
 		},
 		{
 			name: "Multiple Directives",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 				DirectiveScriptSrc:  {SourceSelf, SourceUnsafeInline},
 			}),
@@ -228,21 +228,21 @@ func TestCSP_String(t *testing.T) {
 		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedPolicies: []string{}},
 		{
 			name: "Single Directive",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveDefaultSrc, SourceNone)},
 		},
 		{
 			name: "Single Directive, No Sources",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveUpgradeInsecureRequests: {},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s;", DirectiveUpgradeInsecureRequests)},
 		},
 		{
 			name: "Multiple Directives",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc:              {SourceNone},
 				DirectiveUpgradeInsecureRequests: {},
 			}),
@@ -294,7 +294,7 @@ func TestCSP_Exists(t *testing.T) {
 		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedExists: false},
 		{
 			name: "Single Directive",
-			csp: NewContentSecurityPolicy(map[CSPDirective][]string{
+			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedExists: true,

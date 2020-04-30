@@ -129,7 +129,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 
 	// fill Helmet with custom parameters
 	helmet := Empty()
-	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]string{
+	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 		DirectiveDefaultSrc: {SourceNone},
 	})
 	helmet.DNSPrefetchControl = DNSPrefetchControlOn
