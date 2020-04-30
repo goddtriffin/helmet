@@ -11,38 +11,38 @@ const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
 // List of all Content Security Policy directives.
 const (
-	DirectiveBaseURI                 = "base-uri"
-	DirectiveBlockAllMixedContent    = "block-all-mixed-content"
-	DirectiveChildSrc                = "child-src"
-	DirectiveConnectSrc              = "connect-src"
-	DirectiveDefaultSrc              = "default-src"
-	DirectiveFontSrc                 = "font-src"
-	DirectiveFormAction              = "form-action"
-	DirectiveFrameAncestors          = "frame-ancestors"
-	DirectiveFrameSrc                = "frame-src"
-	DirectiveImgSrc                  = "img-src"
-	DirectiveManifestSrc             = "manifest-src"
-	DirectiveMediaSrc                = "media-src"
-	DirectiveNavigateTo              = "navigate-to"
-	DirectiveObjectSrc               = "object-src"
-	DirectivePluginTypes             = "plugin-types"
-	DirectivePrefetchSrc             = "prefetch-src"
-	DirectiveReportTo                = "report-to"
-	DirectiveSandbox                 = "sandbox"
-	DirectiveScriptSrc               = "script-src"
-	DirectiveScriptSrcAttr           = "script-src-attr"
-	DirectiveScriptSrcElem           = "script-src-elem"
-	DirectiveStyleSrc                = "style-src"
-	DirectiveStyleSrcAttr            = "style-src-attr"
-	DirectiveStyleSrcElem            = "style-src-elem"
-	DirectiveTrustedTypes            = "trusted-types"
-	DirectiveUpgradeInsecureRequests = "upgrade-insecure-requests"
-	DirectiveWorkerSrc               = "worker-src"
+	DirectiveBaseURI                 Directive = "base-uri"
+	DirectiveBlockAllMixedContent    Directive = "block-all-mixed-content"
+	DirectiveChildSrc                Directive = "child-src"
+	DirectiveConnectSrc              Directive = "connect-src"
+	DirectiveDefaultSrc              Directive = "default-src"
+	DirectiveFontSrc                 Directive = "font-src"
+	DirectiveFormAction              Directive = "form-action"
+	DirectiveFrameAncestors          Directive = "frame-ancestors"
+	DirectiveFrameSrc                Directive = "frame-src"
+	DirectiveImgSrc                  Directive = "img-src"
+	DirectiveManifestSrc             Directive = "manifest-src"
+	DirectiveMediaSrc                Directive = "media-src"
+	DirectiveNavigateTo              Directive = "navigate-to"
+	DirectiveObjectSrc               Directive = "object-src"
+	DirectivePluginTypes             Directive = "plugin-types"
+	DirectivePrefetchSrc             Directive = "prefetch-src"
+	DirectiveReportTo                Directive = "report-to"
+	DirectiveSandbox                 Directive = "sandbox"
+	DirectiveScriptSrc               Directive = "script-src"
+	DirectiveScriptSrcAttr           Directive = "script-src-attr"
+	DirectiveScriptSrcElem           Directive = "script-src-elem"
+	DirectiveStyleSrc                Directive = "style-src"
+	DirectiveStyleSrcAttr            Directive = "style-src-attr"
+	DirectiveStyleSrcElem            Directive = "style-src-elem"
+	DirectiveTrustedTypes            Directive = "trusted-types"
+	DirectiveUpgradeInsecureRequests Directive = "upgrade-insecure-requests"
+	DirectiveWorkerSrc               Directive = "worker-src"
 
 	// deprecated
-	DeprecatedDirectiveReferrer      = "referrer"   // use 'Referrer-Policy' header instead
-	DeprecatedDirectiveReportURI     = "report-uri" // use 'report-to' directive instead
-	DeprecatedDirectiveRequireSriFor = "require-sri-for"
+	DeprecatedDirectiveReferrer      Directive = "referrer"   // use 'Referrer-Policy' HTTP header instead
+	DeprecatedDirectiveReportURI     Directive = "report-uri" // use 'report-to' CSP directive instead
+	DeprecatedDirectiveRequireSriFor Directive = "require-sri-for"
 )
 
 // List of all Content Security Policy sources.
@@ -95,15 +95,18 @@ const (
 	TrustedTypesAllowDuplicates = "allow-duplicates"
 )
 
+// Directive represents a Content Security Policy directive.
+type Directive string
+
 // ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
 type ContentSecurityPolicy struct {
-	policies map[string][]string
+	policies map[Directive][]string
 
 	cache string
 }
 
 // NewContentSecurityPolicy creates a new ContentSecurityPolicy.
-func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPolicy {
+func NewContentSecurityPolicy(policies map[Directive][]string) *ContentSecurityPolicy {
 	if policies == nil {
 		return EmptyContentSecurityPolicy()
 	}
@@ -112,11 +115,11 @@ func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPoli
 
 // EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.
 func EmptyContentSecurityPolicy() *ContentSecurityPolicy {
-	return NewContentSecurityPolicy(make(map[string][]string))
+	return NewContentSecurityPolicy(make(map[Directive][]string))
 }
 
 // Add adds a directive and its sources.
-func (csp *ContentSecurityPolicy) Add(directive string, sources ...string) {
+func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
 	if len(directive) == 0 {
 		return
 	}
@@ -129,7 +132,7 @@ func (csp *ContentSecurityPolicy) Add(directive string, sources ...string) {
 	}
 }
 
-func (csp *ContentSecurityPolicy) create(directive string) {
+func (csp *ContentSecurityPolicy) create(directive Directive) {
 	if len(directive) == 0 {
 		return
 	}

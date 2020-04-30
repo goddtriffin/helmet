@@ -29,17 +29,17 @@ func TestContentSecurityPolicy_New(t *testing.T) {
 
 	testCases := []struct {
 		name     string
-		policies map[string][]string
+		policies map[Directive][]string
 	}{
 		{
 			name: "Single Directive",
-			policies: map[string][]string{
+			policies: map[Directive][]string{
 				DirectiveDefaultSrc: {SourceNone},
 			},
 		},
 		{
 			name: "Multiple Directives",
-			policies: map[string][]string{
+			policies: map[Directive][]string{
 				DirectiveDefaultSrc: {SourceNone},
 				DirectiveScriptSrc:  {SourceSelf, SourceUnsafeInline},
 			},
@@ -100,7 +100,7 @@ func TestCSP_Add(t *testing.T) {
 
 	testCases := []struct {
 		name       string
-		directive  string
+		directive  Directive
 		sources    []string
 		expectedOk bool
 	}{
@@ -142,7 +142,7 @@ func TestCSP_Create(t *testing.T) {
 
 	testCases := []struct {
 		name       string
-		directive  string
+		directive  Directive
 		expectedOk bool
 	}{
 		{name: "Empty", directive: "", expectedOk: false},
@@ -178,21 +178,21 @@ func TestCSP_String(t *testing.T) {
 		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedPolicies: []string{}},
 		{
 			name: "Single Directive",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			csp: NewContentSecurityPolicy(map[Directive][]string{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveDefaultSrc, SourceNone)},
 		},
 		{
 			name: "Single Directive, No Sources",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			csp: NewContentSecurityPolicy(map[Directive][]string{
 				DirectiveUpgradeInsecureRequests: {},
 			}),
 			expectedPolicies: []string{fmt.Sprintf("%s;", DirectiveUpgradeInsecureRequests)},
 		},
 		{
 			name: "Multiple Directives",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			csp: NewContentSecurityPolicy(map[Directive][]string{
 				DirectiveDefaultSrc:              {SourceNone},
 				DirectiveUpgradeInsecureRequests: {},
 			}),
@@ -244,7 +244,7 @@ func TestCSP_Exists(t *testing.T) {
 		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedExists: false},
 		{
 			name: "Single Directive",
-			csp: NewContentSecurityPolicy(map[string][]string{
+			csp: NewContentSecurityPolicy(map[Directive][]string{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
 			expectedExists: true,
