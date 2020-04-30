@@ -92,7 +92,7 @@ const (
 
 // List of all DirectiveTrustedTypes values.
 const (
-	TrustedTypesAllowDuplicates = "allow-duplicates"
+	TrustedTypesAllowDuplicates CSPSource = "allow-duplicates"
 )
 
 type (
@@ -101,14 +101,14 @@ type (
 
 	// CSPSource represents a Content Security Policy source.
 	CSPSource string
+
+	// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
+	ContentSecurityPolicy struct {
+		policies map[CSPDirective][]CSPSource
+
+		cache string
+	}
 )
-
-// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
-type ContentSecurityPolicy struct {
-	policies map[CSPDirective][]CSPSource
-
-	cache string
-}
 
 // NewContentSecurityPolicy creates a new ContentSecurityPolicy.
 func NewContentSecurityPolicy(policies map[CSPDirective][]CSPSource) *ContentSecurityPolicy {
