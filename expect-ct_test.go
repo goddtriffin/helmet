@@ -4,6 +4,73 @@ import (
 	"testing"
 )
 
+func TestExpectCT_New(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name      string
+		maxAge    int
+		enforce   bool
+		reportURI string
+	}{
+		{name: "Empty", maxAge: 0, enforce: false, reportURI: ""},
+		{name: "Max Age", maxAge: 30, enforce: false, reportURI: ""},
+		{name: "Enforce", maxAge: 0, enforce: true, reportURI: ""},
+		{name: "ReportURI", maxAge: 0, enforce: false, reportURI: "/report-uri"},
+		{name: "Max Age, Enforce", maxAge: 30, enforce: true, reportURI: ""},
+		{name: "Max Age, ReportURI", maxAge: 30, enforce: false, reportURI: "/report-uri"},
+		{name: "Enforce, ReportURI", maxAge: 0, enforce: true, reportURI: "/report-uri"},
+		{name: "Max Age, Enforce, ReportURI", maxAge: 30, enforce: true, reportURI: "/report-uri"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			ect := NewExpectCT(tc.maxAge, tc.enforce, tc.reportURI)
+
+			if ect.MaxAge != tc.maxAge {
+				t.Errorf("Incorrect MaxAge\tExpected: %d\tActual: %d\n", tc.maxAge, ect.MaxAge)
+			}
+
+			if ect.Enforce != tc.enforce {
+				t.Errorf("Incorrect Enforce\tExpected: %t\tActual: %t\n", tc.enforce, ect.Enforce)
+			}
+
+			if ect.ReportURI != tc.reportURI {
+				t.Errorf("Incorrect ReportURI\tExpected: %s\tActual: %s\n", tc.reportURI, ect.ReportURI)
+			}
+
+			if ect.cache != "" {
+				t.Errorf("Cache should not be set\tActual: %s\n", ect.cache)
+			}
+		})
+	}
+}
+
+func TestExpectCT_Empty(t *testing.T) {
+	t.Parallel()
+
+	ect := EmptyExpectCT()
+
+	if ect.MaxAge != 0 {
+		t.Errorf("MaxAge should be zero\tExpected: %d\tActual: %d\n", 0, ect.MaxAge)
+	}
+
+	if ect.Enforce != false {
+		t.Errorf("Enforce should be false\tExpected: %t\tActual: %t\n", false, ect.Enforce)
+	}
+
+	if ect.ReportURI != "" {
+		t.Errorf("ReportURI should be empty\tExpected: %s\tActual: %s\n", "", ect.ReportURI)
+	}
+
+	if ect.cache != "" {
+		t.Errorf("Cache should not be set\tActual: %s\n", ect.cache)
+	}
+}
+
 func TestExpectCT_String(t *testing.T) {
 	t.Parallel()
 

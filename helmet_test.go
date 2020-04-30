@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestSecure_new(t *testing.T) {
+func TestHelmet_Secure_default(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -16,66 +16,13 @@ func TestSecure_new(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := New()
-	helmet.Secure(next).ServeHTTP(rr, r)
-	resp := rr.Result()
-
-	testCases := []struct {
-		header string
-	}{
-		{HeaderContentSecurityPolicy}, {HeaderDNSPrefetchControl}, {HeaderExpectCT},
-		{HeaderPermittedCrossDomainPolicies},
-	}
-
-	// test headers
-	for _, tc := range testCases {
-		tc := tc
-		t.Run(tc.header, func(t *testing.T) {
-			t.Parallel()
-			header := resp.Header.Get(tc.header)
-			if header != "" {
-				t.Errorf("Header exists when it shouldn't: %s\n", header)
-			}
-		})
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Expected: %d\tActual: %d\n", http.StatusOK, resp.StatusCode)
-	}
-
-	defer resp.Body.Close()
-	buf, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	body := string(buf)
-	if body != "OK" {
-		t.Errorf("Expected: %s\tActual: %s\n", "OK", body)
-	}
-}
-
-func TestSecure_default(t *testing.T) {
-	t.Parallel()
-
-	rr := httptest.NewRecorder()
-	r, err := http.NewRequest(http.MethodGet, "/", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("OK"))
-	})
-
+	// default Helmet
 	helmet := Default()
-	helmet.Secure(next).ServeHTTP(rr, r)
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
 	resp := rr.Result()
 
 	testCases := []struct {
@@ -85,10 +32,9 @@ func TestSecure_default(t *testing.T) {
 		{HeaderContentSecurityPolicy, ""},
 		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
-		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesNone.String()},
+		{HeaderPermittedCrossDomainPolicies, ""},
 	}
 
-	// test headers
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -116,7 +62,7 @@ func TestSecure_default(t *testing.T) {
 	}
 }
 
-func TestSecure_custom(t *testing.T) {
+func TestHelmet_Secure_empty(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -125,18 +71,72 @@ func TestSecure_custom(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := New()
-	helmet.ContentSecurityPolicy.Add(DirectiveDefaultSrc, SourceNone)
+	// blank slate Helmet
+	helmet := Empty()
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
+	resp := rr.Result()
+
+	testCases := []struct {
+		header string
+	}{
+		{HeaderContentSecurityPolicy}, {HeaderDNSPrefetchControl}, {HeaderExpectCT},
+		{HeaderPermittedCrossDomainPolicies},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.header, func(t *testing.T) {
+			t.Parallel()
+			header := resp.Header.Get(tc.header)
+			if header != "" {
+				t.Errorf("Header exists when it shouldn't: %s\n", header)
+			}
+		})
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Expected: %d\tActual: %d\n", http.StatusOK, resp.StatusCode)
+	}
+
+	defer resp.Body.Close()
+	buf, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	body := string(buf)
+	if body != "OK" {
+		t.Errorf("Expected: %s\tActual: %s\n", "OK", body)
+	}
+}
+
+func TestHelmet_Secure_custom(t *testing.T) {
+	t.Parallel()
+
+	rr := httptest.NewRecorder()
+	r, err := http.NewRequest(http.MethodGet, "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
+	})
+
+	// fill Helmet with custom parameters
+	helmet := Empty()
+	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[string][]string{
+		DirectiveDefaultSrc: {SourceNone},
+	})
 	helmet.DNSPrefetchControl = DNSPrefetchControlOn
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 
-	helmet.Secure(next).ServeHTTP(rr, r)
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
 	resp := rr.Result()
 
 	testCases := []struct {
@@ -149,7 +149,6 @@ func TestSecure_custom(t *testing.T) {
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 	}
 
-	// test headers
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
