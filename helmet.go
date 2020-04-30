@@ -12,21 +12,21 @@ type Helmet struct {
 	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
 }
 
+// Default creates a new Helmet with default settings.
+func Default() *Helmet {
+	return &Helmet{
+		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
+		DNSPrefetchControl:           DNSPrefetchControlOff,
+		ExpectCT:                     EmptyExpectCT(),
+		PermittedCrossDomainPolicies: "",
+	}
+}
+
 // Empty creates a new Helmet.
 func Empty() *Helmet {
 	return &Helmet{
 		ContentSecurityPolicy: EmptyContentSecurityPolicy(),
 		ExpectCT:              EmptyExpectCT(),
-	}
-}
-
-// Default creates a new Helmet with default settings.
-func Default() *Helmet {
-	return &Helmet{
-		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
-		DNSPrefetchControl:           "",
-		ExpectCT:                     EmptyExpectCT(),
-		PermittedCrossDomainPolicies: "",
 	}
 }
 

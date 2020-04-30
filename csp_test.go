@@ -6,6 +6,73 @@ import (
 	"testing"
 )
 
+func TestContentSecurityPolicy_New(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Nil", func(t *testing.T) {
+		t.Parallel()
+
+		csp := NewContentSecurityPolicy(nil)
+
+		if csp.policies == nil {
+			t.Errorf("Policies should not be nil\n")
+		}
+
+		if len(csp.policies) != 0 {
+			t.Errorf("There should be zero policies/sources\n")
+		}
+	})
+
+	testCases := []struct {
+		name     string
+		policies map[string][]string
+	}{
+		{
+			name: "Single Directive",
+			policies: map[string][]string{
+				DirectiveDefaultSrc: {SourceNone},
+			},
+		},
+		{
+			name: "Multiple Directives",
+			policies: map[string][]string{
+				DirectiveDefaultSrc: {SourceNone},
+				DirectiveScriptSrc:  {SourceSelf, SourceUnsafeInline},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			csp := NewContentSecurityPolicy(tc.policies)
+
+			if len(csp.policies) != len(tc.policies) {
+				t.Errorf("Length doesn't match\tExpected: %d\tActual: %d\n", len(tc.policies), len(csp.policies))
+			}
+
+			for policy, sources := range csp.policies {
+				expectedSources, ok := tc.policies[policy]
+				if !ok {
+					t.Errorf("Missing policy\tExpected: %s\n", policy)
+				}
+
+				for i, source := range sources {
+					if source != expectedSources[i] {
+						t.Errorf("Missing source\tExpected: %s\n", source)
+					}
+				}
+			}
+
+			if csp.cache != "" {
+				t.Errorf("Cache should not be set\tCache: %s\n", csp.cache)
+			}
+		})
+	}
+}
+
 func TestCSP_Add(t *testing.T) {
 	t.Parallel()
 
@@ -30,7 +97,7 @@ func TestCSP_Add(t *testing.T) {
 
 			// make sure directive is now in CSP policies
 			if _, ok := csp.policies[tc.directive]; ok != tc.expectedOk {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedOk, ok)
+				t.Errorf("Directive is missing\tDirective: %s\n", tc.directive)
 			}
 
 			// next part requires there to be sources

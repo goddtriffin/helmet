@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestHelmet_Secure_empty(t *testing.T) {
+func TestHelmet_Secure_default(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -16,30 +16,32 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := Empty()
-	helmet.Secure(next).ServeHTTP(rr, r)
+	// default Helmet
+	helmet := Default()
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
 	resp := rr.Result()
 
 	testCases := []struct {
+		name   string
 		header string
 	}{
-		{HeaderContentSecurityPolicy}, {HeaderDNSPrefetchControl}, {HeaderExpectCT},
-		{HeaderPermittedCrossDomainPolicies},
+		{HeaderContentSecurityPolicy, ""},
+		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
+		{HeaderExpectCT, ""},
+		{HeaderPermittedCrossDomainPolicies, ""},
 	}
 
-	// test headers
 	for _, tc := range testCases {
 		tc := tc
-		t.Run(tc.header, func(t *testing.T) {
+		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			header := resp.Header.Get(tc.header)
-			if header != "" {
-				t.Errorf("Header exists when it shouldn't: %s\n", header)
+			header := resp.Header.Get(tc.name)
+			if header != tc.header {
+				t.Errorf("Expected: %s\tActual: %s\n", tc.header, header)
 			}
 		})
 	}
@@ -60,7 +62,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 	}
 }
 
-func TestHelmet_Secure_default(t *testing.T) {
+func TestHelmet_Secure_empty(t *testing.T) {
 	t.Parallel()
 
 	rr := httptest.NewRecorder()
@@ -69,33 +71,29 @@ func TestHelmet_Secure_default(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
-	helmet := Default()
-	helmet.Secure(next).ServeHTTP(rr, r)
+	// blank slate Helmet
+	helmet := Empty()
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
 	resp := rr.Result()
 
 	testCases := []struct {
-		name   string
 		header string
 	}{
-		{HeaderContentSecurityPolicy, ""},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
-		{HeaderExpectCT, ""},
-		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesNone.String()},
+		{HeaderContentSecurityPolicy}, {HeaderDNSPrefetchControl}, {HeaderExpectCT},
+		{HeaderPermittedCrossDomainPolicies},
 	}
 
-	// test headers
 	for _, tc := range testCases {
 		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(tc.header, func(t *testing.T) {
 			t.Parallel()
-			header := resp.Header.Get(tc.name)
-			if header != tc.header {
-				t.Errorf("Expected: %s\tActual: %s\n", tc.header, header)
+			header := resp.Header.Get(tc.header)
+			if header != "" {
+				t.Errorf("Header exists when it shouldn't: %s\n", header)
 			}
 		})
 	}
@@ -125,11 +123,11 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// mock HTTP handler that we can pass to our secureHeaders middleware
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mockNext := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("OK"))
 	})
 
+	// fill Helmet with custom parameters
 	helmet := Empty()
 	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[string][]string{
 		DirectiveDefaultSrc: {SourceNone},
@@ -138,7 +136,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 
-	helmet.Secure(next).ServeHTTP(rr, r)
+	helmet.Secure(mockNext).ServeHTTP(rr, r)
 	resp := rr.Result()
 
 	testCases := []struct {
@@ -151,7 +149,6 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 	}
 
-	// test headers
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
