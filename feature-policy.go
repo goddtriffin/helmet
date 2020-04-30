@@ -35,8 +35,21 @@ const (
 	DeprecatedDirectiveVR      FeaturePolicyDirective = "vr"
 )
 
-// FeaturePolicyDirective represents a Feature-Policy directive.
-type FeaturePolicyDirective string
+// List of all Feature-Policy origins.
+const (
+	OriginWildcard FeaturePolicyOrigin = "*"
+	OriginSelf     FeaturePolicyOrigin = "'self'"
+	OriginSrc      FeaturePolicyOrigin = "'src'"
+	OriginNone     FeaturePolicyOrigin = "'none'"
+)
+
+type (
+	// FeaturePolicyDirective represents a Feature-Policy directive.
+	FeaturePolicyDirective string
+
+	// FeaturePolicyOrigin represents a Feature-Policy origin.
+	FeaturePolicyOrigin string
+)
 
 // FeaturePolicy represents the Feature-Policy HTTP security header.
 type FeaturePolicy struct {
