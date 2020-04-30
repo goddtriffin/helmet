@@ -1,6 +1,10 @@
 package helmet
 
-import "testing"
+import (
+	"fmt"
+	"strings"
+	"testing"
+)
 
 func TestFeaturePolicy_New(t *testing.T) {
 	t.Parallel()
@@ -102,7 +106,7 @@ func TestFeaturePolicy_Add(t *testing.T) {
 	}{
 		{name: "Empty", directive: "", expectedOk: false},
 		{name: "Directive with Origin", directive: DirectiveMicrophone, origins: []FeaturePolicyOrigin{OriginNone}, expectedOk: true},
-		{name: "No Origins", directive: DirectiveGeolocation, origins: []FeaturePolicyOrigin{}, expectedOk: true},
+		{name: "No Origins", directive: DirectiveGeolocation, origins: []FeaturePolicyOrigin{}, expectedOk: false},
 	}
 
 	for _, tc := range testCases {
@@ -206,6 +210,65 @@ func TestFeaturePolicy_Remove(t *testing.T) {
 			for _, directive := range tc.directives {
 				if _, ok := tc.fp.policies[directive]; ok {
 					t.Errorf("Directive should be removed\tDirective: %s\n", directive)
+				}
+			}
+		})
+	}
+}
+
+func TestFeaturePolicy_String(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name             string
+		fp               *FeaturePolicy
+		expectedPolicies []string
+	}{
+		{name: "Empty", fp: EmptyFeaturePolicy(), expectedPolicies: []string{}},
+		{name: "Nil", fp: NewFeaturePolicy(nil), expectedPolicies: []string{}},
+		{
+			name: "Single Directive",
+			fp: NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
+				DirectiveMicrophone: {OriginNone},
+			}),
+			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveMicrophone, OriginNone)},
+		},
+		{
+			name: "Multiple Directives",
+			fp: NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
+				DirectiveMicrophone:  {OriginNone},
+				DirectiveGeolocation: {OriginSelf, OriginSrc},
+			}),
+			expectedPolicies: []string{
+				fmt.Sprintf("%s %s;", DirectiveMicrophone, OriginNone),
+				fmt.Sprintf("%s %s %s;", DirectiveGeolocation, OriginSelf, OriginSrc),
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			// check that the FeaturePolicy contains all policies
+			str := tc.fp.String()
+			for _, policy := range tc.expectedPolicies {
+				if !strings.Contains(str, policy) {
+					t.Errorf("Policy is missing\tExpected: %s\tActual: %s\n", policy, str)
+				}
+			}
+
+			// check that cache is set
+			if len(tc.expectedPolicies) > 0 && len(tc.fp.cache) == 0 {
+				t.Errorf("FeaturePolicy String() cache is not set\tActual: %s\n", tc.fp.cache)
+			}
+
+			// utilize said cache
+			str = tc.fp.String()
+			for _, policy := range tc.expectedPolicies {
+				if !strings.Contains(str, policy) {
+					t.Errorf("Cache policy is missing\tExpected: %s\tActual: %s\n", policy, str)
 				}
 			}
 		})

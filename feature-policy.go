@@ -1,5 +1,10 @@
 package helmet
 
+import (
+	"fmt"
+	"strings"
+)
+
 // HeaderFeaturePolicy is the Feature-Policy HTTP security header.
 const HeaderFeaturePolicy = "Feature-Policy"
 
@@ -76,7 +81,7 @@ func EmptyFeaturePolicy() *FeaturePolicy {
 
 // Add adds a directive and its origins.
 func (fp *FeaturePolicy) Add(directive FeaturePolicyDirective, origins ...FeaturePolicyOrigin) {
-	if len(directive) == 0 {
+	if len(directive) == 0 || len(origins) == 0 {
 		return
 	}
 	fp.cache = ""
@@ -115,4 +120,24 @@ func (fp *FeaturePolicy) Remove(directives ...FeaturePolicyDirective) {
 	if didRemove {
 		fp.cache = ""
 	}
+}
+
+// String generates the Feature-Policy.
+func (fp *FeaturePolicy) String() string {
+	if fp.cache != "" {
+		return fp.cache
+	}
+
+	var policies = []string{}
+	for directive, origins := range fp.policies {
+		originsAsStrings := []string{}
+		for _, origin := range origins {
+			originsAsStrings = append(originsAsStrings, string(origin))
+		}
+
+		policies = append(policies, fmt.Sprintf("%s %s;", directive, strings.Join(originsAsStrings, " ")))
+	}
+
+	fp.cache = strings.Join(policies, "; ")
+	return fp.cache
 }
