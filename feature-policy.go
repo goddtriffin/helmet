@@ -1,5 +1,8 @@
 package helmet
 
+// HeaderFeaturePolicy is the Feature-Policy HTTP security header.
+const HeaderFeaturePolicy = "Feature-Policy"
+
 // List of all Feature-Policy directives.
 const (
 	DirectiveAccelerometer               FeaturePolicyDirective = "accelerometer"
@@ -53,4 +56,20 @@ type (
 
 // FeaturePolicy represents the Feature-Policy HTTP security header.
 type FeaturePolicy struct {
+	policies map[FeaturePolicyDirective][]FeaturePolicyOrigin
+
+	cache string
+}
+
+// NewFeaturePolicy creates a new FeaturePolicy.
+func NewFeaturePolicy(policies map[FeaturePolicyDirective][]FeaturePolicyOrigin) *FeaturePolicy {
+	if policies == nil {
+		return EmptyFeaturePolicy()
+	}
+	return &FeaturePolicy{policies, ""}
+}
+
+// EmptyFeaturePolicy creates a blank slate FeaturePolicy.
+func EmptyFeaturePolicy() *FeaturePolicy {
+	return NewFeaturePolicy(make(map[FeaturePolicyDirective][]FeaturePolicyOrigin))
 }
