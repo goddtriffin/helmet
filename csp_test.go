@@ -166,6 +166,56 @@ func TestCSP_Create(t *testing.T) {
 	}
 }
 
+func TestCSP_Remove(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name       string
+		csp        *ContentSecurityPolicy
+		directives []Directive
+	}{
+		{name: "Empty", csp: EmptyContentSecurityPolicy(), directives: []Directive{}},
+		{
+			name: "Single Directive",
+			csp: NewContentSecurityPolicy(map[Directive][]string{
+				DirectiveDefaultSrc: {SourceNone},
+			}),
+			directives: []Directive{DirectiveDefaultSrc},
+		},
+		{
+			name: "Multiple Directives",
+			csp: NewContentSecurityPolicy(map[Directive][]string{
+				DirectiveDefaultSrc: {SourceNone},
+				DirectiveScriptSrc:  {SourceSelf, SourceUnsafeInline},
+			}),
+			directives: []Directive{DirectiveDefaultSrc, DirectiveScriptSrc},
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			// make sure directives are in CSP
+			for _, directive := range tc.directives {
+				if _, ok := tc.csp.policies[directive]; !ok {
+					t.Errorf("Directive is missing\tDirective: %s\n", directive)
+				}
+			}
+
+			tc.csp.Remove(tc.directives...)
+
+			// make sure directives are NOT in CSP
+			for _, directive := range tc.directives {
+				if _, ok := tc.csp.policies[directive]; ok {
+					t.Errorf("Directive should be removed\tDirective: %s\n", directive)
+				}
+			}
+		})
+	}
+}
+
 func TestCSP_String(t *testing.T) {
 	t.Parallel()
 

@@ -123,7 +123,6 @@ func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
 	if len(directive) == 0 {
 		return
 	}
-
 	csp.cache = ""
 
 	csp.create(directive)
@@ -136,11 +135,29 @@ func (csp *ContentSecurityPolicy) create(directive Directive) {
 	if len(directive) == 0 {
 		return
 	}
-
 	csp.cache = ""
 
 	if _, ok := csp.policies[directive]; !ok {
 		csp.policies[directive] = []string{}
+	}
+}
+
+// Remove removes a directive and its sources.
+func (csp *ContentSecurityPolicy) Remove(directives ...Directive) {
+	if len(directives) == 0 {
+		return
+	}
+
+	didRemove := false
+	for _, directive := range directives {
+		if _, ok := csp.policies[directive]; ok {
+			didRemove = true
+			delete(csp.policies, directive)
+		}
+	}
+
+	if didRemove {
+		csp.cache = ""
 	}
 }
 
