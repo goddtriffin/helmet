@@ -4,7 +4,7 @@ HTTP security middleware for [Go(lang)](https://golang.org/) inspired by [Helmet
 
 | Module                                                                                                             | Default Value(s) |
 | ------------------------------------------------------------------------------------------------------------------ | ---------------- |
-| [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)                                   | N/A              |
+| [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)                                   |                  |
 | [DNS Prefetch Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control)           | "off"            |
-| [Expect CT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT)                                   | N/A              |
-| [Permitted Cross Domain Policies](https://owasp.org/www-project-secure-headers/#x-permitted-cross-domain-policies) | N/A              |
+| [Expect CT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT)                                   |                  |
+| [Permitted Cross Domain Policies](https://owasp.org/www-project-secure-headers/#x-permitted-cross-domain-policies) |                  |
