@@ -11,38 +11,38 @@ const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
 // List of all Content Security Policy directives.
 const (
-	DirectiveBaseURI                 Directive = "base-uri"
-	DirectiveBlockAllMixedContent    Directive = "block-all-mixed-content"
-	DirectiveChildSrc                Directive = "child-src"
-	DirectiveConnectSrc              Directive = "connect-src"
-	DirectiveDefaultSrc              Directive = "default-src"
-	DirectiveFontSrc                 Directive = "font-src"
-	DirectiveFormAction              Directive = "form-action"
-	DirectiveFrameAncestors          Directive = "frame-ancestors"
-	DirectiveFrameSrc                Directive = "frame-src"
-	DirectiveImgSrc                  Directive = "img-src"
-	DirectiveManifestSrc             Directive = "manifest-src"
-	DirectiveMediaSrc                Directive = "media-src"
-	DirectiveNavigateTo              Directive = "navigate-to"
-	DirectiveObjectSrc               Directive = "object-src"
-	DirectivePluginTypes             Directive = "plugin-types"
-	DirectivePrefetchSrc             Directive = "prefetch-src"
-	DirectiveReportTo                Directive = "report-to"
-	DirectiveSandbox                 Directive = "sandbox"
-	DirectiveScriptSrc               Directive = "script-src"
-	DirectiveScriptSrcAttr           Directive = "script-src-attr"
-	DirectiveScriptSrcElem           Directive = "script-src-elem"
-	DirectiveStyleSrc                Directive = "style-src"
-	DirectiveStyleSrcAttr            Directive = "style-src-attr"
-	DirectiveStyleSrcElem            Directive = "style-src-elem"
-	DirectiveTrustedTypes            Directive = "trusted-types"
-	DirectiveUpgradeInsecureRequests Directive = "upgrade-insecure-requests"
-	DirectiveWorkerSrc               Directive = "worker-src"
+	DirectiveBaseURI                 CSPDirective = "base-uri"
+	DirectiveBlockAllMixedContent    CSPDirective = "block-all-mixed-content"
+	DirectiveChildSrc                CSPDirective = "child-src"
+	DirectiveConnectSrc              CSPDirective = "connect-src"
+	DirectiveDefaultSrc              CSPDirective = "default-src"
+	DirectiveFontSrc                 CSPDirective = "font-src"
+	DirectiveFormAction              CSPDirective = "form-action"
+	DirectiveFrameAncestors          CSPDirective = "frame-ancestors"
+	DirectiveFrameSrc                CSPDirective = "frame-src"
+	DirectiveImgSrc                  CSPDirective = "img-src"
+	DirectiveManifestSrc             CSPDirective = "manifest-src"
+	DirectiveMediaSrc                CSPDirective = "media-src"
+	DirectiveNavigateTo              CSPDirective = "navigate-to"
+	DirectiveObjectSrc               CSPDirective = "object-src"
+	DirectivePluginTypes             CSPDirective = "plugin-types"
+	DirectivePrefetchSrc             CSPDirective = "prefetch-src"
+	DirectiveReportTo                CSPDirective = "report-to"
+	DirectiveSandbox                 CSPDirective = "sandbox"
+	DirectiveScriptSrc               CSPDirective = "script-src"
+	DirectiveScriptSrcAttr           CSPDirective = "script-src-attr"
+	DirectiveScriptSrcElem           CSPDirective = "script-src-elem"
+	DirectiveStyleSrc                CSPDirective = "style-src"
+	DirectiveStyleSrcAttr            CSPDirective = "style-src-attr"
+	DirectiveStyleSrcElem            CSPDirective = "style-src-elem"
+	DirectiveTrustedTypes            CSPDirective = "trusted-types"
+	DirectiveUpgradeInsecureRequests CSPDirective = "upgrade-insecure-requests"
+	DirectiveWorkerSrc               CSPDirective = "worker-src"
 
 	// deprecated
-	DeprecatedDirectiveReferrer      Directive = "referrer"   // use 'Referrer-Policy' HTTP header instead
-	DeprecatedDirectiveReportURI     Directive = "report-uri" // use 'report-to' CSP directive instead
-	DeprecatedDirectiveRequireSriFor Directive = "require-sri-for"
+	DeprecatedDirectiveReferrer      CSPDirective = "referrer"   // use 'Referrer-Policy' HTTP header instead
+	DeprecatedDirectiveReportURI     CSPDirective = "report-uri" // use 'report-to' CSP directive instead
+	DeprecatedDirectiveRequireSriFor CSPDirective = "require-sri-for"
 )
 
 // List of all Content Security Policy sources.
@@ -95,18 +95,18 @@ const (
 	TrustedTypesAllowDuplicates = "allow-duplicates"
 )
 
-// Directive represents a Content Security Policy directive.
-type Directive string
+// CSPDirective represents a Content Security Policy directive.
+type CSPDirective string
 
 // ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
 type ContentSecurityPolicy struct {
-	policies map[Directive][]string
+	policies map[CSPDirective][]string
 
 	cache string
 }
 
 // NewContentSecurityPolicy creates a new ContentSecurityPolicy.
-func NewContentSecurityPolicy(policies map[Directive][]string) *ContentSecurityPolicy {
+func NewContentSecurityPolicy(policies map[CSPDirective][]string) *ContentSecurityPolicy {
 	if policies == nil {
 		return EmptyContentSecurityPolicy()
 	}
@@ -115,11 +115,11 @@ func NewContentSecurityPolicy(policies map[Directive][]string) *ContentSecurityP
 
 // EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.
 func EmptyContentSecurityPolicy() *ContentSecurityPolicy {
-	return NewContentSecurityPolicy(make(map[Directive][]string))
+	return NewContentSecurityPolicy(make(map[CSPDirective][]string))
 }
 
 // Add adds a directive and its sources.
-func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
+func (csp *ContentSecurityPolicy) Add(directive CSPDirective, sources ...string) {
 	if len(directive) == 0 {
 		return
 	}
@@ -131,7 +131,7 @@ func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
 	}
 }
 
-func (csp *ContentSecurityPolicy) create(directive Directive) {
+func (csp *ContentSecurityPolicy) create(directive CSPDirective) {
 	if len(directive) == 0 {
 		return
 	}
@@ -143,7 +143,7 @@ func (csp *ContentSecurityPolicy) create(directive Directive) {
 }
 
 // Remove removes a directive and its sources.
-func (csp *ContentSecurityPolicy) Remove(directives ...Directive) {
+func (csp *ContentSecurityPolicy) Remove(directives ...CSPDirective) {
 	if len(directives) == 0 {
 		return
 	}
