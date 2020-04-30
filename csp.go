@@ -104,15 +104,10 @@ type ContentSecurityPolicy struct {
 
 // NewContentSecurityPolicy creates a new ContentSecurityPolicy.
 func NewContentSecurityPolicy(policies map[string][]string) *ContentSecurityPolicy {
-	csp := &ContentSecurityPolicy{}
-
-	if policies != nil {
-		csp.policies = policies
-	} else {
-		csp.policies = make(map[string][]string)
+	if policies == nil {
+		return EmptyContentSecurityPolicy()
 	}
-
-	return csp
+	return &ContentSecurityPolicy{policies, ""}
 }
 
 // EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.

@@ -73,6 +73,20 @@ func TestContentSecurityPolicy_New(t *testing.T) {
 	}
 }
 
+func TestContentSecurityPolicy_Empty(t *testing.T) {
+	t.Parallel()
+
+	csp := EmptyContentSecurityPolicy()
+
+	if csp.policies == nil {
+		t.Errorf("Policies should not be nil\n")
+	}
+
+	if len(csp.policies) != 0 {
+		t.Errorf("There should be zero policies/sources\n")
+	}
+}
+
 func TestCSP_Add(t *testing.T) {
 	t.Parallel()
 
