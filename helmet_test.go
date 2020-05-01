@@ -28,11 +28,11 @@ func TestHelmet_Secure_default(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, ""},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
+		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
 		{HeaderFeaturePolicy, ""},
-		{HeaderFrameOptions, FrameOptionsSameOrigin.String()},
-		{HeaderPermittedCrossDomainPolicies, ""},
+		{HeaderXFrameOptions, XFrameOptionsSameOrigin.String()},
+		{HeaderXPermittedCrossDomainPolicies, ""},
 	}
 
 	for _, tc := range testCases {
@@ -73,11 +73,11 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy},
-		{HeaderDNSPrefetchControl},
+		{HeaderXDNSPrefetchControl},
 		{HeaderExpectCT},
 		{HeaderFeaturePolicy},
-		{HeaderFrameOptions},
-		{HeaderPermittedCrossDomainPolicies},
+		{HeaderXFrameOptions},
+		{HeaderXPermittedCrossDomainPolicies},
 	}
 
 	for _, tc := range testCases {
@@ -105,13 +105,13 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 		DirectiveDefaultSrc: {SourceNone},
 	})
-	helmet.DNSPrefetchControl = DNSPrefetchControlOn
+	helmet.XDNSPrefetchControl = XDNSPrefetchControlOn
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
 	helmet.FeaturePolicy = NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 		DirectiveGeolocation: {OriginSelf, OriginSrc},
 	})
-	helmet.FrameOptions = FrameOptionsDeny
-	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
+	helmet.XFrameOptions = XFrameOptionsDeny
+	helmet.XPermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
 
 	addXPoweredByHelmetMiddleware(helmet.Secure(mockNext)).ServeHTTP(rr, r)
@@ -122,11 +122,11 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, "default-src 'none'"},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOn.String()},
+		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
-		{HeaderFrameOptions, "DENY"},
-		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
+		{HeaderXFrameOptions, "DENY"},
+		{HeaderXPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 		{HeaderXPoweredBy, "PHP 4.2.0"},
 	}
 

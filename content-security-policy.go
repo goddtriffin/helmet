@@ -110,7 +110,7 @@ type (
 	}
 )
 
-// NewContentSecurityPolicy creates a new ContentSecurityPolicy.
+// NewContentSecurityPolicy creates a new Content-Security-Policy.
 func NewContentSecurityPolicy(policies map[CSPDirective][]CSPSource) *ContentSecurityPolicy {
 	if policies == nil {
 		return EmptyContentSecurityPolicy()
@@ -118,7 +118,7 @@ func NewContentSecurityPolicy(policies map[CSPDirective][]CSPSource) *ContentSec
 	return &ContentSecurityPolicy{policies, ""}
 }
 
-// EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.
+// EmptyContentSecurityPolicy creates a blank slate Content-Security-Policy.
 func EmptyContentSecurityPolicy() *ContentSecurityPolicy {
 	return NewContentSecurityPolicy(make(map[CSPDirective][]CSPSource))
 }

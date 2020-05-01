@@ -6,25 +6,25 @@ import (
 
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
 type Helmet struct {
-	ContentSecurityPolicy        *ContentSecurityPolicy
-	DNSPrefetchControl           DNSPrefetchControl
-	ExpectCT                     *ExpectCT
-	FeaturePolicy                *FeaturePolicy
-	FrameOptions                 FrameOptions
-	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
-	XPoweredBy                   *XPoweredBy
+	ContentSecurityPolicy         *ContentSecurityPolicy
+	XDNSPrefetchControl           XDNSPrefetchControl
+	ExpectCT                      *ExpectCT
+	FeaturePolicy                 *FeaturePolicy
+	XFrameOptions                 XFrameOptions
+	XPermittedCrossDomainPolicies XPermittedCrossDomainPolicies
+	XPoweredBy                    *XPoweredBy
 }
 
 // Default creates a new Helmet with default settings.
 func Default() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
-		DNSPrefetchControl:           DNSPrefetchControlOff,
-		ExpectCT:                     EmptyExpectCT(),
-		FeaturePolicy:                EmptyFeaturePolicy(),
-		FrameOptions:                 FrameOptionsSameOrigin,
-		PermittedCrossDomainPolicies: "",
-		XPoweredBy:                   NewXPoweredBy(true, ""),
+		ContentSecurityPolicy:         EmptyContentSecurityPolicy(),
+		XDNSPrefetchControl:           XDNSPrefetchControlOff,
+		ExpectCT:                      EmptyExpectCT(),
+		FeaturePolicy:                 EmptyFeaturePolicy(),
+		XFrameOptions:                 XFrameOptionsSameOrigin,
+		XPermittedCrossDomainPolicies: "",
+		XPoweredBy:                    NewXPoweredBy(true, ""),
 	}
 }
 
@@ -42,11 +42,11 @@ func Empty() *Helmet {
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ContentSecurityPolicy.Header(w)
-		h.DNSPrefetchControl.Header(w)
+		h.XDNSPrefetchControl.Header(w)
 		h.ExpectCT.Header(w)
 		h.FeaturePolicy.Header(w)
-		h.FrameOptions.Header(w)
-		h.PermittedCrossDomainPolicies.Header(w)
+		h.XFrameOptions.Header(w)
+		h.XPermittedCrossDomainPolicies.Header(w)
 		h.XPoweredBy.Header(w)
 
 		next.ServeHTTP(w, r)
