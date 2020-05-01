@@ -37,6 +37,7 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | Module                                                                                                           | Default                                        |
 | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
 | [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)                                 |                                                |
+| [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options)       | `nosniff`                                      |
 | [X-DNS-Prefetch-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control)       | `off`                                          |
 | [X-Download-Options](https://helmetjs.github.io/docs/ienoopen/)                                                  | `noopen`                                       |
 | [Expect-CT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT)                                 |                                                |

@@ -28,6 +28,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, ""},
+		{HeaderXContentTypeOptions, XContentTypeOptionsNoSniff.String()},
 		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOff.String()},
 		{HeaderXDownloadOptions, XDownloadOptionsNoOpen.String()},
 		{HeaderExpectCT, ""},
@@ -75,6 +76,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy},
+		{HeaderXContentTypeOptions},
 		{HeaderXDNSPrefetchControl},
 		{HeaderXDownloadOptions},
 		{HeaderExpectCT},
@@ -109,6 +111,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 		DirectiveDefaultSrc: {SourceNone},
 	})
+	helmet.XContentTypeOptions = XContentTypeOptionsNoSniff
 	helmet.XDNSPrefetchControl = XDNSPrefetchControlOn
 	helmet.XDownloadOptions = XDownloadOptionsNoOpen
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
@@ -128,6 +131,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, "default-src 'none'"},
+		{HeaderXContentTypeOptions, XContentTypeOptionsNoSniff.String()},
 		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOn.String()},
 		{HeaderXDownloadOptions, XDownloadOptionsNoOpen.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
