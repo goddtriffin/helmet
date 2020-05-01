@@ -47,7 +47,6 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 
 		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		// w.Header().Set("X-Content-Type-Options", "nosniff")
-		// w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 		// w.Header().Set("X-XSS-Protection", "1; mode=block")
 
 		next.ServeHTTP(w, r)
