@@ -152,8 +152,8 @@ func (fp *FeaturePolicy) Exists() bool {
 	return true
 }
 
-// AddHeader adds the Feature-Policy HTTP security header to the given http.ResponseWriter.
-func (fp *FeaturePolicy) AddHeader(w http.ResponseWriter) {
+// Header adds the Feature-Policy HTTP security header to the given http.ResponseWriter.
+func (fp *FeaturePolicy) Header(w http.ResponseWriter) {
 	if fp.Exists() {
 		w.Header().Set(HeaderFeaturePolicy, fp.String())
 	}

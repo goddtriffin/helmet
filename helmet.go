@@ -38,12 +38,12 @@ func Empty() *Helmet {
 // Secure is the middleware handler.
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		h.ContentSecurityPolicy.AddHeader(w)
-		h.DNSPrefetchControl.AddHeader(w)
-		h.ExpectCT.AddHeader(w)
-		h.FeaturePolicy.AddHeader(w)
-		h.FrameOptions.AddHeader(w)
-		h.PermittedCrossDomainPolicies.AddHeader(w)
+		h.ContentSecurityPolicy.Header(w)
+		h.DNSPrefetchControl.Header(w)
+		h.ExpectCT.Header(w)
+		h.FeaturePolicy.Header(w)
+		h.FrameOptions.Header(w)
+		h.PermittedCrossDomainPolicies.Header(w)
 
 		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		// w.Header().Set("X-Content-Type-Options", "nosniff")

@@ -27,8 +27,8 @@ func (dns DNSPrefetchControl) Exists() bool {
 	return true
 }
 
-// AddHeader adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
-func (dns DNSPrefetchControl) AddHeader(w http.ResponseWriter) {
+// Header adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
+func (dns DNSPrefetchControl) Header(w http.ResponseWriter) {
 	if dns.Exists() {
 		w.Header().Set(HeaderDNSPrefetchControl, dns.String())
 	}

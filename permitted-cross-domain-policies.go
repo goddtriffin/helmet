@@ -30,8 +30,8 @@ func (pcdp PermittedCrossDomainPolicies) Exists() bool {
 	return true
 }
 
-// AddHeader adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
-func (pcdp PermittedCrossDomainPolicies) AddHeader(w http.ResponseWriter) {
+// Header adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
+func (pcdp PermittedCrossDomainPolicies) Header(w http.ResponseWriter) {
 	if pcdp.Exists() {
 		w.Header().Set(HeaderPermittedCrossDomainPolicies, pcdp.String())
 	}

@@ -199,8 +199,8 @@ func (csp *ContentSecurityPolicy) Exists() bool {
 	return true
 }
 
-// AddHeader adds the Content-Security-Policy HTTP security header to the given http.ResponseWriter.
-func (csp *ContentSecurityPolicy) AddHeader(w http.ResponseWriter) {
+// Header adds the Content-Security-Policy HTTP security header to the given http.ResponseWriter.
+func (csp *ContentSecurityPolicy) Header(w http.ResponseWriter) {
 	if csp.Exists() {
 		w.Header().Set(HeaderContentSecurityPolicy, csp.String())
 	}

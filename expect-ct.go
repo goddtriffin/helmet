@@ -67,8 +67,8 @@ func (ect *ExpectCT) Exists() bool {
 	return true
 }
 
-// AddHeader adds the Expect-CT HTTP security header to the given http.ResponseWriter.
-func (ect *ExpectCT) AddHeader(w http.ResponseWriter) {
+// Header adds the Expect-CT HTTP security header to the given http.ResponseWriter.
+func (ect *ExpectCT) Header(w http.ResponseWriter) {
 	if ect.Exists() {
 		w.Header().Set(HeaderExpectCT, ect.String())
 	}
