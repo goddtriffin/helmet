@@ -2,17 +2,17 @@ package helmet
 
 import "testing"
 
-func TestDNSPrefetchControl_String(t *testing.T) {
+func TestXDNSPrefetchControl_String(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name               string
-		dnsPrefetchControl XDNSPrefetchControl
-		expectedHeader     string
+		name                string
+		xDNSPrefetchControl XDNSPrefetchControl
+		expectedHeader      string
 	}{
-		{name: "Empty", dnsPrefetchControl: "", expectedHeader: ""},
-		{name: "On", dnsPrefetchControl: XDNSPrefetchControlOn, expectedHeader: "on"},
-		{name: "Off", dnsPrefetchControl: XDNSPrefetchControlOff, expectedHeader: "off"},
+		{name: "Empty", xDNSPrefetchControl: "", expectedHeader: ""},
+		{name: "On", xDNSPrefetchControl: XDNSPrefetchControlOn, expectedHeader: "on"},
+		{name: "Off", xDNSPrefetchControl: XDNSPrefetchControlOff, expectedHeader: "off"},
 	}
 
 	for _, tc := range testCases {
@@ -20,7 +20,7 @@ func TestDNSPrefetchControl_String(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			header := tc.dnsPrefetchControl.String()
+			header := tc.xDNSPrefetchControl.String()
 			if header != tc.expectedHeader {
 				t.Errorf("Expected: %s\tActual: %s\n", tc.expectedHeader, header)
 			}
@@ -28,17 +28,17 @@ func TestDNSPrefetchControl_String(t *testing.T) {
 	}
 }
 
-func TestDNSPrefetchControl_Exists(t *testing.T) {
+func TestXDNSPrefetchControl_Exists(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name               string
-		dnsPrefetchControl XDNSPrefetchControl
-		expectedExists     bool
+		name                string
+		xDNSPrefetchControl XDNSPrefetchControl
+		expectedExists      bool
 	}{
-		{name: "Empty", dnsPrefetchControl: "", expectedExists: false},
-		{name: "On", dnsPrefetchControl: XDNSPrefetchControlOn, expectedExists: true},
-		{name: "Off", dnsPrefetchControl: XDNSPrefetchControlOff, expectedExists: true},
+		{name: "Empty", xDNSPrefetchControl: "", expectedExists: false},
+		{name: "On", xDNSPrefetchControl: XDNSPrefetchControlOn, expectedExists: true},
+		{name: "Off", xDNSPrefetchControl: XDNSPrefetchControlOff, expectedExists: true},
 	}
 
 	for _, tc := range testCases {
@@ -46,7 +46,7 @@ func TestDNSPrefetchControl_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.dnsPrefetchControl.Exists()
+			exists := tc.xDNSPrefetchControl.Exists()
 			if exists != tc.expectedExists {
 				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
 			}
