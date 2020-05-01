@@ -8,6 +8,7 @@ import (
 type Helmet struct {
 	ContentSecurityPolicy         *ContentSecurityPolicy
 	XDNSPrefetchControl           XDNSPrefetchControl
+	XDownloadOptions              XDownloadOptions
 	ExpectCT                      *ExpectCT
 	FeaturePolicy                 *FeaturePolicy
 	XFrameOptions                 XFrameOptions
@@ -21,6 +22,7 @@ func Default() *Helmet {
 	return &Helmet{
 		ContentSecurityPolicy:         EmptyContentSecurityPolicy(),
 		XDNSPrefetchControl:           XDNSPrefetchControlOff,
+		XDownloadOptions:              XDownloadOptionsNoOpen,
 		ExpectCT:                      EmptyExpectCT(),
 		FeaturePolicy:                 EmptyFeaturePolicy(),
 		XFrameOptions:                 XFrameOptionsSameOrigin,
@@ -46,6 +48,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ContentSecurityPolicy.Header(w)
 		h.XDNSPrefetchControl.Header(w)
+		h.XDownloadOptions.Header(w)
 		h.ExpectCT.Header(w)
 		h.FeaturePolicy.Header(w)
 		h.XFrameOptions.Header(w)
