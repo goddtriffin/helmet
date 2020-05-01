@@ -1,4 +1,6 @@
-# <img src="docs/logo.svg" alt="HelmetJS logo" height="64px"/> Helmet
+# Helmet
+
+![HelmetJS logo](docs/logo.svg)
 
 HTTP security middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
@@ -41,3 +43,7 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)               | `SAMEORIGIN`                      |
 | [X-Permitted-Cross-Domain-Policies](https://helmetjs.github.io/docs/crossdomain/)                          |                                   |
 | [X-Powered-By](https://helmetjs.github.io/docs/hide-powered-by/)                                           | Removes the `X-Powered-By` header |
+
+#
+
+Icon by [Hand-Drawn Goods](https://www.iconfinder.com/handdrawngoods), licensed under a [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
