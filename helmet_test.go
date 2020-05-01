@@ -33,6 +33,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderFeaturePolicy, ""},
 		{HeaderXFrameOptions, XFrameOptionsSameOrigin.String()},
 		{HeaderXPermittedCrossDomainPolicies, ""},
+		{HeaderStrictTransportSecurity, "max-age=5184000; includeSubDomains"},
 	}
 
 	for _, tc := range testCases {
@@ -78,6 +79,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		{HeaderFeaturePolicy},
 		{HeaderXFrameOptions},
 		{HeaderXPermittedCrossDomainPolicies},
+		{HeaderStrictTransportSecurity},
 	}
 
 	for _, tc := range testCases {
@@ -113,6 +115,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.XFrameOptions = XFrameOptionsDeny
 	helmet.XPermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
+	helmet.StrictTransportSecurity = NewStrictTransportSecurity(31536000, true, true)
 
 	addXPoweredByHelmetMiddleware(helmet.Secure(mockNext)).ServeHTTP(rr, r)
 	resp := rr.Result()
@@ -128,6 +131,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderXFrameOptions, "DENY"},
 		{HeaderXPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 		{HeaderXPoweredBy, "PHP 4.2.0"},
+		{HeaderStrictTransportSecurity, "max-age=31536000; includeSubDomains; preload"},
 	}
 
 	for _, tc := range testCases {

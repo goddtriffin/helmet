@@ -9,14 +9,38 @@ import (
 // HeaderExpectCT is the Expect-CT HTTP security header.
 const HeaderExpectCT = "Expect-CT"
 
-// ExpectCT represents the Expect-CT HTTP security header.
-type ExpectCT struct {
-	MaxAge    int    // number of seconds that the browser should cache and apply the received policy for
-	Enforce   bool   // controls whether the browser should enforce the policy or treat it as report-only mode
-	ReportURI string // specifies where the browser should send reports if it does not receive valid CT information
+// DirectiveEnforce is the Expect-CT Enforce directive.
+const DirectiveEnforce ExpectCTDirective = "enforce"
 
-	cache string
+// ExpectCTDirectiveMaxAge is the Expect-CT MaxAge directive.
+func ExpectCTDirectiveMaxAge(maxAge int) ExpectCTDirective {
+	if maxAge <= 0 {
+		return ""
+	}
+	return ExpectCTDirective(fmt.Sprintf("max-age=%d", maxAge))
 }
+
+// ExpectCTDirectiveReportURI is the Expect-CT ReportURI directive.
+func ExpectCTDirectiveReportURI(reportURI string) ExpectCTDirective {
+	if reportURI == "" {
+		return ""
+	}
+	return ExpectCTDirective(fmt.Sprintf(`report-uri="%s"`, reportURI))
+}
+
+type (
+	// ExpectCTDirective represents a Expect-CT directive.
+	ExpectCTDirective string
+
+	// ExpectCT represents the Expect-CT HTTP security header.
+	ExpectCT struct {
+		MaxAge    int    // number of seconds that the browser should cache and apply the received policy for
+		Enforce   bool   // controls whether the browser should enforce the policy or treat it as report-only mode
+		ReportURI string // specifies where the browser should send reports if it does not receive valid CT information
+
+		cache string
+	}
+)
 
 // NewExpectCT creates a new Expect-CT.
 func NewExpectCT(maxAge int, enforce bool, reportURI string) *ExpectCT {
@@ -38,19 +62,21 @@ func (ect *ExpectCT) String() string {
 	}
 
 	// max age is not optional
-	if ect.MaxAge == 0 {
+	if ect.MaxAge <= 0 {
 		ect.cache = ""
 		return ect.cache
 	}
 
-	builder := []string{fmt.Sprintf("max-age=%d", ect.MaxAge)}
+	builder := []string{
+		string(ExpectCTDirectiveMaxAge(ect.MaxAge)),
+	}
 
 	if ect.Enforce {
-		builder = append(builder, "enforce")
+		builder = append(builder, string(DirectiveEnforce))
 	}
 
 	if ect.ReportURI != "" {
-		builder = append(builder, fmt.Sprintf("report-uri=\"%s\"", ect.ReportURI))
+		builder = append(builder, string(ExpectCTDirectiveReportURI(ect.ReportURI)))
 	}
 
 	ect.cache = strings.Join(builder, ", ")
