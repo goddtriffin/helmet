@@ -18,7 +18,7 @@ type ExpectCT struct {
 	cache string
 }
 
-// NewExpectCT creates a new ExpectCT.
+// NewExpectCT creates a new Expect-CT.
 func NewExpectCT(maxAge int, enforce bool, reportURI string) *ExpectCT {
 	return &ExpectCT{
 		Enforce:   enforce,
@@ -27,7 +27,7 @@ func NewExpectCT(maxAge int, enforce bool, reportURI string) *ExpectCT {
 	}
 }
 
-// EmptyExpectCT creates a blank slate ExpectCT.
+// EmptyExpectCT creates a blank slate Expect-CT.
 func EmptyExpectCT() *ExpectCT {
 	return NewExpectCT(0, false, "")
 }
