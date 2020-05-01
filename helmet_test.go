@@ -28,7 +28,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, ""},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
+		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
 		{HeaderFeaturePolicy, ""},
 		{HeaderFrameOptions, FrameOptionsSameOrigin.String()},
@@ -73,7 +73,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy},
-		{HeaderDNSPrefetchControl},
+		{HeaderXDNSPrefetchControl},
 		{HeaderExpectCT},
 		{HeaderFeaturePolicy},
 		{HeaderFrameOptions},
@@ -105,7 +105,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 		DirectiveDefaultSrc: {SourceNone},
 	})
-	helmet.DNSPrefetchControl = DNSPrefetchControlOn
+	helmet.XDNSPrefetchControl = XDNSPrefetchControlOn
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
 	helmet.FeaturePolicy = NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 		DirectiveGeolocation: {OriginSelf, OriginSrc},
@@ -122,7 +122,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		header string
 	}{
 		{HeaderContentSecurityPolicy, "default-src 'none'"},
-		{HeaderDNSPrefetchControl, DNSPrefetchControlOn.String()},
+		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
 		{HeaderFrameOptions, "DENY"},

@@ -7,7 +7,7 @@ import (
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
 type Helmet struct {
 	ContentSecurityPolicy        *ContentSecurityPolicy
-	DNSPrefetchControl           DNSPrefetchControl
+	XDNSPrefetchControl          XDNSPrefetchControl
 	ExpectCT                     *ExpectCT
 	FeaturePolicy                *FeaturePolicy
 	FrameOptions                 FrameOptions
@@ -19,7 +19,7 @@ type Helmet struct {
 func Default() *Helmet {
 	return &Helmet{
 		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
-		DNSPrefetchControl:           DNSPrefetchControlOff,
+		XDNSPrefetchControl:          XDNSPrefetchControlOff,
 		ExpectCT:                     EmptyExpectCT(),
 		FeaturePolicy:                EmptyFeaturePolicy(),
 		FrameOptions:                 FrameOptionsSameOrigin,
@@ -42,7 +42,7 @@ func Empty() *Helmet {
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ContentSecurityPolicy.Header(w)
-		h.DNSPrefetchControl.Header(w)
+		h.XDNSPrefetchControl.Header(w)
 		h.ExpectCT.Header(w)
 		h.FeaturePolicy.Header(w)
 		h.FrameOptions.Header(w)

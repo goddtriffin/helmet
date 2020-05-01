@@ -2,24 +2,24 @@ package helmet
 
 import "net/http"
 
-// HeaderDNSPrefetchControl is the X-DNS-Prefetch-Control HTTP header.
-const HeaderDNSPrefetchControl = "X-DNS-Prefetch-Control"
+// HeaderXDNSPrefetchControl is the X-DNS-Prefetch-Control HTTP header.
+const HeaderXDNSPrefetchControl = "X-DNS-Prefetch-Control"
 
 // X-DNS-Prefetch-Control options.
 const (
-	DNSPrefetchControlOn  DNSPrefetchControl = "on"
-	DNSPrefetchControlOff DNSPrefetchControl = "off"
+	XDNSPrefetchControlOn  XDNSPrefetchControl = "on"
+	XDNSPrefetchControlOff XDNSPrefetchControl = "off"
 )
 
-// DNSPrefetchControl represents the X-DNS-Prefetch-Control HTTP security header.
-type DNSPrefetchControl string
+// XDNSPrefetchControl represents the X-DNS-Prefetch-Control HTTP security header.
+type XDNSPrefetchControl string
 
-func (dns DNSPrefetchControl) String() string {
+func (dns XDNSPrefetchControl) String() string {
 	return string(dns)
 }
 
 // Exists returns whether the X-DNS-Prefetch-Control has been set.
-func (dns DNSPrefetchControl) Exists() bool {
+func (dns XDNSPrefetchControl) Exists() bool {
 	if dns.String() == "" {
 		return false
 	}
@@ -28,8 +28,8 @@ func (dns DNSPrefetchControl) Exists() bool {
 }
 
 // Header adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
-func (dns DNSPrefetchControl) Header(w http.ResponseWriter) {
+func (dns XDNSPrefetchControl) Header(w http.ResponseWriter) {
 	if dns.Exists() {
-		w.Header().Set(HeaderDNSPrefetchControl, dns.String())
+		w.Header().Set(HeaderXDNSPrefetchControl, dns.String())
 	}
 }

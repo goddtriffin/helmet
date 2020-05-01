@@ -7,12 +7,12 @@ func TestDNSPrefetchControl_String(t *testing.T) {
 
 	testCases := []struct {
 		name               string
-		dnsPrefetchControl DNSPrefetchControl
+		dnsPrefetchControl XDNSPrefetchControl
 		expectedHeader     string
 	}{
 		{name: "Empty", dnsPrefetchControl: "", expectedHeader: ""},
-		{name: "On", dnsPrefetchControl: DNSPrefetchControlOn, expectedHeader: "on"},
-		{name: "Off", dnsPrefetchControl: DNSPrefetchControlOff, expectedHeader: "off"},
+		{name: "On", dnsPrefetchControl: XDNSPrefetchControlOn, expectedHeader: "on"},
+		{name: "Off", dnsPrefetchControl: XDNSPrefetchControlOff, expectedHeader: "off"},
 	}
 
 	for _, tc := range testCases {
@@ -33,12 +33,12 @@ func TestDNSPrefetchControl_Exists(t *testing.T) {
 
 	testCases := []struct {
 		name               string
-		dnsPrefetchControl DNSPrefetchControl
+		dnsPrefetchControl XDNSPrefetchControl
 		expectedExists     bool
 	}{
 		{name: "Empty", dnsPrefetchControl: "", expectedExists: false},
-		{name: "On", dnsPrefetchControl: DNSPrefetchControlOn, expectedExists: true},
-		{name: "Off", dnsPrefetchControl: DNSPrefetchControlOff, expectedExists: true},
+		{name: "On", dnsPrefetchControl: XDNSPrefetchControlOn, expectedExists: true},
+		{name: "Off", dnsPrefetchControl: XDNSPrefetchControlOff, expectedExists: true},
 	}
 
 	for _, tc := range testCases {
