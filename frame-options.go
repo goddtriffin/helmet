@@ -27,8 +27,8 @@ func (fo FrameOptions) Exists() bool {
 	return true
 }
 
-// AddHeader adds the X-Frame-Options HTTP header to the given http.ResponseWriter.
-func (fo FrameOptions) AddHeader(w http.ResponseWriter) {
+// Header adds the X-Frame-Options HTTP header to the given http.ResponseWriter.
+func (fo FrameOptions) Header(w http.ResponseWriter) {
 	if fo.Exists() {
 		w.Header().Set(HeaderFrameOptions, fo.String())
 	}

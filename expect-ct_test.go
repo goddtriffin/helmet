@@ -55,15 +55,15 @@ func TestExpectCT_Empty(t *testing.T) {
 	ect := EmptyExpectCT()
 
 	if ect.MaxAge != 0 {
-		t.Errorf("MaxAge should be zero\tExpected: %d\tActual: %d\n", 0, ect.MaxAge)
+		t.Errorf("MaxAge should be zero\tActual: %d\n", ect.MaxAge)
 	}
 
 	if ect.Enforce != false {
-		t.Errorf("Enforce should be false\tExpected: %t\tActual: %t\n", false, ect.Enforce)
+		t.Errorf("Enforce should be false\tActual: %t\n", ect.Enforce)
 	}
 
 	if ect.ReportURI != "" {
-		t.Errorf("ReportURI should be empty\tExpected: %s\tActual: %s\n", "", ect.ReportURI)
+		t.Errorf("ReportURI should be empty\tActual: %s\n", ect.ReportURI)
 	}
 
 	if ect.cache != "" {
