@@ -1,4 +1,4 @@
-# Helmet
+# <img src="docs/logo.svg" alt="HelmetJS logo" height="64px"/> Helmet
 
 HTTP security middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
