@@ -2,7 +2,7 @@
 
 ![HelmetJS logo](docs/logo.svg)
 
-HTTP security middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
+HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
 ## Quick Start
 
