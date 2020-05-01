@@ -32,7 +32,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderExpectCT, ""},
 		{HeaderFeaturePolicy, ""},
 		{HeaderXFrameOptions, XFrameOptionsSameOrigin.String()},
-		{HeaderPermittedCrossDomainPolicies, ""},
+		{HeaderXPermittedCrossDomainPolicies, ""},
 	}
 
 	for _, tc := range testCases {
@@ -77,7 +77,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		{HeaderExpectCT},
 		{HeaderFeaturePolicy},
 		{HeaderXFrameOptions},
-		{HeaderPermittedCrossDomainPolicies},
+		{HeaderXPermittedCrossDomainPolicies},
 	}
 
 	for _, tc := range testCases {
@@ -111,7 +111,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		DirectiveGeolocation: {OriginSelf, OriginSrc},
 	})
 	helmet.XFrameOptions = XFrameOptionsDeny
-	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
+	helmet.XPermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
 
 	addXPoweredByHelmetMiddleware(helmet.Secure(mockNext)).ServeHTTP(rr, r)
@@ -126,7 +126,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
 		{HeaderXFrameOptions, "DENY"},
-		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
+		{HeaderXPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 		{HeaderXPoweredBy, "PHP 4.2.0"},
 	}
 

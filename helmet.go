@@ -6,25 +6,25 @@ import (
 
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
 type Helmet struct {
-	ContentSecurityPolicy        *ContentSecurityPolicy
-	XDNSPrefetchControl          XDNSPrefetchControl
-	ExpectCT                     *ExpectCT
-	FeaturePolicy                *FeaturePolicy
-	XFrameOptions                XFrameOptions
-	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
-	XPoweredBy                   *XPoweredBy
+	ContentSecurityPolicy         *ContentSecurityPolicy
+	XDNSPrefetchControl           XDNSPrefetchControl
+	ExpectCT                      *ExpectCT
+	FeaturePolicy                 *FeaturePolicy
+	XFrameOptions                 XFrameOptions
+	XPermittedCrossDomainPolicies XPermittedCrossDomainPolicies
+	XPoweredBy                    *XPoweredBy
 }
 
 // Default creates a new Helmet with default settings.
 func Default() *Helmet {
 	return &Helmet{
-		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
-		XDNSPrefetchControl:          XDNSPrefetchControlOff,
-		ExpectCT:                     EmptyExpectCT(),
-		FeaturePolicy:                EmptyFeaturePolicy(),
-		XFrameOptions:                XFrameOptionsSameOrigin,
-		PermittedCrossDomainPolicies: "",
-		XPoweredBy:                   NewXPoweredBy(true, ""),
+		ContentSecurityPolicy:         EmptyContentSecurityPolicy(),
+		XDNSPrefetchControl:           XDNSPrefetchControlOff,
+		ExpectCT:                      EmptyExpectCT(),
+		FeaturePolicy:                 EmptyFeaturePolicy(),
+		XFrameOptions:                 XFrameOptionsSameOrigin,
+		XPermittedCrossDomainPolicies: "",
+		XPoweredBy:                    NewXPoweredBy(true, ""),
 	}
 }
 
@@ -46,7 +46,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.ExpectCT.Header(w)
 		h.FeaturePolicy.Header(w)
 		h.XFrameOptions.Header(w)
-		h.PermittedCrossDomainPolicies.Header(w)
+		h.XPermittedCrossDomainPolicies.Header(w)
 		h.XPoweredBy.Header(w)
 
 		next.ServeHTTP(w, r)
