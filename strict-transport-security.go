@@ -14,8 +14,8 @@ const (
 	DirectivePreload           HSTSDirective = "preload"
 )
 
-// DirectiveMaxAge is the Strict-Transport-Security MaxAge directive.
-func DirectiveMaxAge(maxAge int) HSTSDirective {
+// HSTSDirectiveMaxAge is the Strict-Transport-Security MaxAge directive.
+func HSTSDirectiveMaxAge(maxAge int) HSTSDirective {
 	return HSTSDirective(fmt.Sprintf("max-age=%d", maxAge))
 }
 
@@ -64,7 +64,7 @@ func (hsts *StrictTransportSecurity) String() string {
 	}
 
 	builder := []string{
-		string(DirectiveMaxAge(hsts.MaxAge)),
+		string(HSTSDirectiveMaxAge(hsts.MaxAge)),
 	}
 
 	if hsts.IncludeSubDomains {
