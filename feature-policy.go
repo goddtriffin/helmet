@@ -67,7 +67,7 @@ type FeaturePolicy struct {
 	cache string
 }
 
-// NewFeaturePolicy creates a new FeaturePolicy.
+// NewFeaturePolicy creates a new Feature-Policy.
 func NewFeaturePolicy(policies map[FeaturePolicyDirective][]FeaturePolicyOrigin) *FeaturePolicy {
 	if policies == nil {
 		return EmptyFeaturePolicy()
@@ -75,7 +75,7 @@ func NewFeaturePolicy(policies map[FeaturePolicyDirective][]FeaturePolicyOrigin)
 	return &FeaturePolicy{policies, ""}
 }
 
-// EmptyFeaturePolicy creates a blank slate FeaturePolicy.
+// EmptyFeaturePolicy creates a blank slate Feature-Policy.
 func EmptyFeaturePolicy() *FeaturePolicy {
 	return NewFeaturePolicy(make(map[FeaturePolicyDirective][]FeaturePolicyOrigin))
 }
