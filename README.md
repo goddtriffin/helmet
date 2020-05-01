@@ -2,6 +2,32 @@
 
 HTTP security middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
+## Quick Start
+
+`go get github.com/MagnusFrater/helmet`
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/MagnusFrater/helmet"
+)
+
+func main() {
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "I love HelmetJS, I wish there was a Go(lang) equivalent...")
+	})
+
+	helmet := helmet.Default()
+	http.Handle("/", helmet.Secure(handler))
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+```
+
 | Module                                                                                                     | Default Value(s)                  |
 | ---------------------------------------------------------------------------------------------------------- | --------------------------------- |
 | [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)                           |                                   |
