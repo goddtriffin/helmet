@@ -231,14 +231,14 @@ func TestCSP_String(t *testing.T) {
 			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
-			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveDefaultSrc, SourceNone)},
+			expectedPolicies: []string{fmt.Sprintf("%s %s", DirectiveDefaultSrc, SourceNone)},
 		},
 		{
 			name: "Single Directive, No Sources",
 			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveUpgradeInsecureRequests: {},
 			}),
-			expectedPolicies: []string{fmt.Sprintf("%s;", DirectiveUpgradeInsecureRequests)},
+			expectedPolicies: []string{fmt.Sprintf("%s", DirectiveUpgradeInsecureRequests)},
 		},
 		{
 			name: "Multiple Directives",
@@ -247,8 +247,8 @@ func TestCSP_String(t *testing.T) {
 				DirectiveUpgradeInsecureRequests: {},
 			}),
 			expectedPolicies: []string{
-				fmt.Sprintf("%s %s;", DirectiveDefaultSrc, SourceNone),
-				fmt.Sprintf("%s;", DirectiveUpgradeInsecureRequests),
+				fmt.Sprintf("%s %s", DirectiveDefaultSrc, SourceNone),
+				fmt.Sprintf("%s", DirectiveUpgradeInsecureRequests),
 			},
 		},
 	}
@@ -264,6 +264,16 @@ func TestCSP_String(t *testing.T) {
 				if !strings.Contains(str, policy) {
 					t.Errorf("CSP doesn't contain policy\tExpected: %s\tActual: %s\n", policy, str)
 				}
+			}
+
+			// check for the correct amount of semicolons
+			semicolonCount := strings.Count(str, ";")
+			expectedSemicolonCount := len(tc.expectedPolicies) - 1
+			if expectedSemicolonCount < 0 {
+				expectedSemicolonCount = 0
+			}
+			if semicolonCount != expectedSemicolonCount {
+				t.Errorf("Incorrect amount of semicolons\tExpected: %d\tActual: %d\n", expectedSemicolonCount, semicolonCount)
 			}
 
 			// check that cache is set

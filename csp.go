@@ -175,14 +175,14 @@ func (csp *ContentSecurityPolicy) String() string {
 	var policies = []string{}
 	for directive, sources := range csp.policies {
 		if len(sources) == 0 {
-			policies = append(policies, fmt.Sprintf("%s;", directive))
+			policies = append(policies, fmt.Sprintf("%s", directive))
 		} else {
 			sourcesAsStrings := []string{}
 			for _, source := range sources {
 				sourcesAsStrings = append(sourcesAsStrings, string(source))
 			}
 
-			policies = append(policies, fmt.Sprintf("%s %s;", directive, strings.Join(sourcesAsStrings, " ")))
+			policies = append(policies, fmt.Sprintf("%s %s", directive, strings.Join(sourcesAsStrings, " ")))
 		}
 	}
 

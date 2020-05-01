@@ -136,7 +136,7 @@ func (fp *FeaturePolicy) String() string {
 			originsAsStrings = append(originsAsStrings, string(origin))
 		}
 
-		policies = append(policies, fmt.Sprintf("%s %s;", directive, strings.Join(originsAsStrings, " ")))
+		policies = append(policies, fmt.Sprintf("%s %s", directive, strings.Join(originsAsStrings, " ")))
 	}
 
 	fp.cache = strings.Join(policies, "; ")
@@ -155,6 +155,6 @@ func (fp *FeaturePolicy) Exists() bool {
 // AddHeader adds the FeaturePolicy HTTP header to the given ResponseWriter.
 func (fp *FeaturePolicy) AddHeader(w http.ResponseWriter) {
 	if fp.Exists() {
-		w.Header().Set(HeaderContentSecurityPolicy, fp.String())
+		w.Header().Set(HeaderFeaturePolicy, fp.String())
 	}
 }

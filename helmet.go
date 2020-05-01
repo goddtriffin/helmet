@@ -9,6 +9,7 @@ type Helmet struct {
 	ContentSecurityPolicy        *ContentSecurityPolicy
 	DNSPrefetchControl           DNSPrefetchControl
 	ExpectCT                     *ExpectCT
+	FeaturePolicy                *FeaturePolicy
 	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
 }
 
@@ -18,6 +19,7 @@ func Default() *Helmet {
 		ContentSecurityPolicy:        EmptyContentSecurityPolicy(),
 		DNSPrefetchControl:           DNSPrefetchControlOff,
 		ExpectCT:                     EmptyExpectCT(),
+		FeaturePolicy:                EmptyFeaturePolicy(),
 		PermittedCrossDomainPolicies: "",
 	}
 }
@@ -27,6 +29,7 @@ func Empty() *Helmet {
 	return &Helmet{
 		ContentSecurityPolicy: EmptyContentSecurityPolicy(),
 		ExpectCT:              EmptyExpectCT(),
+		FeaturePolicy:         EmptyFeaturePolicy(),
 	}
 }
 
@@ -36,6 +39,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.ContentSecurityPolicy.AddHeader(w)
 		h.DNSPrefetchControl.AddHeader(w)
 		h.ExpectCT.AddHeader(w)
+		h.FeaturePolicy.AddHeader(w)
 		h.PermittedCrossDomainPolicies.AddHeader(w)
 
 		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")

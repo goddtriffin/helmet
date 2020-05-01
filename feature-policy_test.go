@@ -231,7 +231,7 @@ func TestFeaturePolicy_String(t *testing.T) {
 			fp: NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 				DirectiveMicrophone: {OriginNone},
 			}),
-			expectedPolicies: []string{fmt.Sprintf("%s %s;", DirectiveMicrophone, OriginNone)},
+			expectedPolicies: []string{fmt.Sprintf("%s %s", DirectiveMicrophone, OriginNone)},
 		},
 		{
 			name: "Multiple Directives",
@@ -240,8 +240,8 @@ func TestFeaturePolicy_String(t *testing.T) {
 				DirectiveGeolocation: {OriginSelf, OriginSrc},
 			}),
 			expectedPolicies: []string{
-				fmt.Sprintf("%s %s;", DirectiveMicrophone, OriginNone),
-				fmt.Sprintf("%s %s %s;", DirectiveGeolocation, OriginSelf, OriginSrc),
+				fmt.Sprintf("%s %s", DirectiveMicrophone, OriginNone),
+				fmt.Sprintf("%s %s %s", DirectiveGeolocation, OriginSelf, OriginSrc),
 			},
 		},
 	}
@@ -257,6 +257,16 @@ func TestFeaturePolicy_String(t *testing.T) {
 				if !strings.Contains(str, policy) {
 					t.Errorf("Policy is missing\tExpected: %s\tActual: %s\n", policy, str)
 				}
+			}
+
+			// check for the correct amount of semicolons
+			semicolonCount := strings.Count(str, ";")
+			expectedSemicolonCount := len(tc.expectedPolicies) - 1
+			if expectedSemicolonCount < 0 {
+				expectedSemicolonCount = 0
+			}
+			if semicolonCount != expectedSemicolonCount {
+				t.Errorf("Incorrect amount of semicolons\tExpected: %d\tActual: %d\n", expectedSemicolonCount, semicolonCount)
 			}
 
 			// check that cache is set
