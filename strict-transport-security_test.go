@@ -135,3 +135,29 @@ func TestStrictTransportSecurity_String(t *testing.T) {
 		})
 	}
 }
+
+func TestStrictTransportSecurity_Exists(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name           string
+		hsts           *StrictTransportSecurity
+		expectedExists bool
+	}{
+		{name: "Empty", hsts: EmptyStrictTransportSecurity(), expectedExists: false},
+		{name: "Max Age Zero", hsts: NewStrictTransportSecurity(0, false, false), expectedExists: false},
+		{name: "Max Age Set", hsts: NewStrictTransportSecurity(63072000, false, false), expectedExists: true},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			exists := tc.hsts.Exists()
+			if exists != tc.expectedExists {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			}
+		})
+	}
+}

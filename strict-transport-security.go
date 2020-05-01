@@ -2,6 +2,7 @@ package helmet
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -80,4 +81,21 @@ func (hsts *StrictTransportSecurity) String() string {
 
 	hsts.cache = strings.Join(builder, "; ")
 	return hsts.cache
+}
+
+// Exists returns whether the Strict-Transport-Security has been set.
+func (hsts *StrictTransportSecurity) Exists() bool {
+	if hsts.MaxAge == 0 {
+		// includeSubDomains and preload are optional
+		return false
+	}
+
+	return true
+}
+
+// Header adds the Strict-Transport-Security HTTP security header to the given http.ResponseWriter.
+func (hsts *StrictTransportSecurity) Header(w http.ResponseWriter) {
+	if hsts.Exists() {
+		w.Header().Set(HeaderStrictTransportSecurity, hsts.String())
+	}
 }
