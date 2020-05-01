@@ -12,6 +12,7 @@ type Helmet struct {
 	FeaturePolicy                *FeaturePolicy
 	FrameOptions                 FrameOptions
 	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
+	XPoweredBy                   *XPoweredBy
 }
 
 // Default creates a new Helmet with default settings.
@@ -23,6 +24,7 @@ func Default() *Helmet {
 		FeaturePolicy:                EmptyFeaturePolicy(),
 		FrameOptions:                 FrameOptionsSameOrigin,
 		PermittedCrossDomainPolicies: "",
+		XPoweredBy:                   NewXPoweredBy(true, ""),
 	}
 }
 
@@ -32,6 +34,7 @@ func Empty() *Helmet {
 		ContentSecurityPolicy: EmptyContentSecurityPolicy(),
 		ExpectCT:              EmptyExpectCT(),
 		FeaturePolicy:         EmptyFeaturePolicy(),
+		XPoweredBy:            EmptyXPoweredBy(),
 	}
 }
 
@@ -44,10 +47,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.FeaturePolicy.Header(w)
 		h.FrameOptions.Header(w)
 		h.PermittedCrossDomainPolicies.Header(w)
-
-		// w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
-		// w.Header().Set("X-Content-Type-Options", "nosniff")
-		// w.Header().Set("X-XSS-Protection", "1; mode=block")
+		h.XPoweredBy.Header(w)
 
 		next.ServeHTTP(w, r)
 	})
