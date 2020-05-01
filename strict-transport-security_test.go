@@ -68,3 +68,43 @@ func TestStrictTransportSecurity_Empty(t *testing.T) {
 		t.Errorf("Cache should not be set\tActual: %s\n", hsts.cache)
 	}
 }
+
+func TestStrictTransportSecurity_String(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name           string
+		hsts           *StrictTransportSecurity
+		expectedHeader string
+	}{
+		{name: "Empty", hsts: EmptyStrictTransportSecurity(), expectedHeader: ""},
+		{name: "Max Age Zero", hsts: NewStrictTransportSecurity(0, false, false), expectedHeader: ""},
+		{name: "Max Age", hsts: NewStrictTransportSecurity(63072000, false, false), expectedHeader: "max-age=63072000"},
+		{name: "Max Age, Include Sub Domains", hsts: NewStrictTransportSecurity(63072000, true, false), expectedHeader: "max-age=63072000; includeSubDomains"},
+		{name: "Max Age, Preload", hsts: NewStrictTransportSecurity(63072000, false, true), expectedHeader: "max-age=63072000; preload"},
+		{name: "Max Age, Include Sub Domains, Preload", hsts: NewStrictTransportSecurity(63072000, true, true), expectedHeader: "max-age=63072000; includeSubDomains; preload"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			header := tc.hsts.String()
+			if header != tc.expectedHeader {
+				t.Errorf("Expected: %s\tActual: %s\n", tc.expectedHeader, header)
+			}
+
+			// check that the cache is set
+			if tc.hsts.cache != header {
+				t.Errorf("ExpectCT String() cache is not set!\tActual: %s\n", tc.hsts.cache)
+			}
+
+			// utilize said cache
+			header = tc.hsts.String()
+			if header != tc.expectedHeader {
+				t.Errorf("Expected: %s\tActual: %s\n", tc.expectedHeader, header)
+			}
+		})
+	}
+}
