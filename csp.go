@@ -11,102 +11,107 @@ const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
 // List of all Content Security Policy directives.
 const (
-	DirectiveBaseURI                 Directive = "base-uri"
-	DirectiveBlockAllMixedContent    Directive = "block-all-mixed-content"
-	DirectiveChildSrc                Directive = "child-src"
-	DirectiveConnectSrc              Directive = "connect-src"
-	DirectiveDefaultSrc              Directive = "default-src"
-	DirectiveFontSrc                 Directive = "font-src"
-	DirectiveFormAction              Directive = "form-action"
-	DirectiveFrameAncestors          Directive = "frame-ancestors"
-	DirectiveFrameSrc                Directive = "frame-src"
-	DirectiveImgSrc                  Directive = "img-src"
-	DirectiveManifestSrc             Directive = "manifest-src"
-	DirectiveMediaSrc                Directive = "media-src"
-	DirectiveNavigateTo              Directive = "navigate-to"
-	DirectiveObjectSrc               Directive = "object-src"
-	DirectivePluginTypes             Directive = "plugin-types"
-	DirectivePrefetchSrc             Directive = "prefetch-src"
-	DirectiveReportTo                Directive = "report-to"
-	DirectiveSandbox                 Directive = "sandbox"
-	DirectiveScriptSrc               Directive = "script-src"
-	DirectiveScriptSrcAttr           Directive = "script-src-attr"
-	DirectiveScriptSrcElem           Directive = "script-src-elem"
-	DirectiveStyleSrc                Directive = "style-src"
-	DirectiveStyleSrcAttr            Directive = "style-src-attr"
-	DirectiveStyleSrcElem            Directive = "style-src-elem"
-	DirectiveTrustedTypes            Directive = "trusted-types"
-	DirectiveUpgradeInsecureRequests Directive = "upgrade-insecure-requests"
-	DirectiveWorkerSrc               Directive = "worker-src"
+	DirectiveBaseURI                 CSPDirective = "base-uri"
+	DirectiveBlockAllMixedContent    CSPDirective = "block-all-mixed-content"
+	DirectiveChildSrc                CSPDirective = "child-src"
+	DirectiveConnectSrc              CSPDirective = "connect-src"
+	DirectiveDefaultSrc              CSPDirective = "default-src"
+	DirectiveFontSrc                 CSPDirective = "font-src"
+	DirectiveFormAction              CSPDirective = "form-action"
+	DirectiveFrameAncestors          CSPDirective = "frame-ancestors"
+	DirectiveFrameSrc                CSPDirective = "frame-src"
+	DirectiveImgSrc                  CSPDirective = "img-src"
+	DirectiveManifestSrc             CSPDirective = "manifest-src"
+	DirectiveMediaSrc                CSPDirective = "media-src"
+	DirectiveNavigateTo              CSPDirective = "navigate-to"
+	DirectiveObjectSrc               CSPDirective = "object-src"
+	DirectivePluginTypes             CSPDirective = "plugin-types"
+	DirectivePrefetchSrc             CSPDirective = "prefetch-src"
+	DirectiveReportTo                CSPDirective = "report-to"
+	DirectiveSandbox                 CSPDirective = "sandbox"
+	DirectiveScriptSrc               CSPDirective = "script-src"
+	DirectiveScriptSrcAttr           CSPDirective = "script-src-attr"
+	DirectiveScriptSrcElem           CSPDirective = "script-src-elem"
+	DirectiveStyleSrc                CSPDirective = "style-src"
+	DirectiveStyleSrcAttr            CSPDirective = "style-src-attr"
+	DirectiveStyleSrcElem            CSPDirective = "style-src-elem"
+	DirectiveTrustedTypes            CSPDirective = "trusted-types"
+	DirectiveUpgradeInsecureRequests CSPDirective = "upgrade-insecure-requests"
+	DirectiveWorkerSrc               CSPDirective = "worker-src"
 
 	// deprecated
-	DeprecatedDirectiveReferrer      Directive = "referrer"   // use 'Referrer-Policy' HTTP header instead
-	DeprecatedDirectiveReportURI     Directive = "report-uri" // use 'report-to' CSP directive instead
-	DeprecatedDirectiveRequireSriFor Directive = "require-sri-for"
+	DeprecatedDirectiveReferrer      CSPDirective = "referrer"   // use 'Referrer-Policy' HTTP header instead
+	DeprecatedDirectiveReportURI     CSPDirective = "report-uri" // use 'report-to' CSP directive instead
+	DeprecatedDirectiveRequireSriFor CSPDirective = "require-sri-for"
 )
 
 // List of all Content Security Policy sources.
 const (
-	SourceWildcard      = "*"
-	SourceNone          = "'none'"
-	SourceSelf          = "'self'"
-	SourceHTTP          = "http:"
-	SourceHTTPS         = "https:"
-	SourceData          = "data:"
-	SourceMediastream   = "mediastream:"
-	SourceBlob          = "blob:"
-	SourceFilesystem    = "filesystem:"
-	SourceUnsafeEval    = "'unsafe-eval'"
-	SourceUnsafeHashes  = "'unsafe-hashes'"
-	SourceUnsafeInline  = "'unsafe-inline'"
-	SourceStrictDynamic = "'strict-dynamic'"
-	SourceReportSample  = "'report-sample'"
+	SourceWildcard      CSPSource = "*"
+	SourceNone          CSPSource = "'none'"
+	SourceSelf          CSPSource = "'self'"
+	SourceHTTP          CSPSource = "http:"
+	SourceHTTPS         CSPSource = "https:"
+	SourceData          CSPSource = "data:"
+	SourceMediastream   CSPSource = "mediastream:"
+	SourceBlob          CSPSource = "blob:"
+	SourceFilesystem    CSPSource = "filesystem:"
+	SourceUnsafeEval    CSPSource = "'unsafe-eval'"
+	SourceUnsafeHashes  CSPSource = "'unsafe-hashes'"
+	SourceUnsafeInline  CSPSource = "'unsafe-inline'"
+	SourceStrictDynamic CSPSource = "'strict-dynamic'"
+	SourceReportSample  CSPSource = "'report-sample'"
 )
 
 // List of all DeprecatedDirectiveReferrer values.
 const (
-	DeprecatedReferrerNone                  = "\"none\""
-	DeprecatedReferrerNoReferrer            = "\"no-referrer\""
-	DeprecatedReferrerNoneWhenDowngrade     = "\"none-when-downgrade\""
-	DeprecatedReferrerOrigin                = "\"origin\""
-	DeprecatedReferrerOriginWhenCrossOrigin = "\"origin-when-cross-origin\""
-	DeprecatedReferrerUnsafeURL             = "\"unsafe-url\""
+	DeprecatedReferrerNone                  CSPSource = "\"none\""
+	DeprecatedReferrerNoReferrer            CSPSource = "\"no-referrer\""
+	DeprecatedReferrerNoneWhenDowngrade     CSPSource = "\"none-when-downgrade\""
+	DeprecatedReferrerOrigin                CSPSource = "\"origin\""
+	DeprecatedReferrerOriginWhenCrossOrigin CSPSource = "\"origin-when-cross-origin\""
+	DeprecatedReferrerUnsafeURL             CSPSource = "\"unsafe-url\""
 )
 
 // List of all DirectiveSandbox values.
 const (
-	SandboxAllowDownloadsWithoutUserActivation  = "allow-downloads-without-user-activation"
-	SandboxAllowForms                           = "allow-forms"
-	SandboxAllowModals                          = "allow-modals"
-	SandboxAllowOrientationLock                 = "allow-orientation-lock"
-	SandboxAllowPointerLock                     = "allow-pointer-lock"
-	SandboxAllowPopups                          = "allow-popups"
-	SandboxAllowPopupsToEscapeSandbox           = "allow-popups-to-escape-sandbox"
-	SandboxAllowPresentation                    = "allow-presentation"
-	SandboxAllowSameOrigin                      = "allow-same-origin"
-	SandboxAllowScripts                         = "allow-scripts"
-	SandboxAllowStorageAccessByUserActivatation = "allow-storage-access-by-user-activation"
-	SandboxAllowTopNavigation                   = "allow-top-navigation"
-	SandboxAllowTopNavigationByUserActivation   = "allow-top-navigation-by-user-activation"
+	SandboxAllowDownloadsWithoutUserActivation  CSPSource = "allow-downloads-without-user-activation"
+	SandboxAllowForms                           CSPSource = "allow-forms"
+	SandboxAllowModals                          CSPSource = "allow-modals"
+	SandboxAllowOrientationLock                 CSPSource = "allow-orientation-lock"
+	SandboxAllowPointerLock                     CSPSource = "allow-pointer-lock"
+	SandboxAllowPopups                          CSPSource = "allow-popups"
+	SandboxAllowPopupsToEscapeSandbox           CSPSource = "allow-popups-to-escape-sandbox"
+	SandboxAllowPresentation                    CSPSource = "allow-presentation"
+	SandboxAllowSameOrigin                      CSPSource = "allow-same-origin"
+	SandboxAllowScripts                         CSPSource = "allow-scripts"
+	SandboxAllowStorageAccessByUserActivatation CSPSource = "allow-storage-access-by-user-activation"
+	SandboxAllowTopNavigation                   CSPSource = "allow-top-navigation"
+	SandboxAllowTopNavigationByUserActivation   CSPSource = "allow-top-navigation-by-user-activation"
 )
 
 // List of all DirectiveTrustedTypes values.
 const (
-	TrustedTypesAllowDuplicates = "allow-duplicates"
+	TrustedTypesAllowDuplicates CSPSource = "allow-duplicates"
 )
 
-// Directive represents a Content Security Policy directive.
-type Directive string
+type (
+	// CSPDirective represents a Content Security Policy directive.
+	CSPDirective string
 
-// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
-type ContentSecurityPolicy struct {
-	policies map[Directive][]string
+	// CSPSource represents a Content Security Policy source.
+	CSPSource string
 
-	cache string
-}
+	// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
+	ContentSecurityPolicy struct {
+		policies map[CSPDirective][]CSPSource
+
+		cache string
+	}
+)
 
 // NewContentSecurityPolicy creates a new ContentSecurityPolicy.
-func NewContentSecurityPolicy(policies map[Directive][]string) *ContentSecurityPolicy {
+func NewContentSecurityPolicy(policies map[CSPDirective][]CSPSource) *ContentSecurityPolicy {
 	if policies == nil {
 		return EmptyContentSecurityPolicy()
 	}
@@ -115,11 +120,11 @@ func NewContentSecurityPolicy(policies map[Directive][]string) *ContentSecurityP
 
 // EmptyContentSecurityPolicy creates a blank slate ContentSecurityPolicy.
 func EmptyContentSecurityPolicy() *ContentSecurityPolicy {
-	return NewContentSecurityPolicy(make(map[Directive][]string))
+	return NewContentSecurityPolicy(make(map[CSPDirective][]CSPSource))
 }
 
 // Add adds a directive and its sources.
-func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
+func (csp *ContentSecurityPolicy) Add(directive CSPDirective, sources ...CSPSource) {
 	if len(directive) == 0 {
 		return
 	}
@@ -131,19 +136,19 @@ func (csp *ContentSecurityPolicy) Add(directive Directive, sources ...string) {
 	}
 }
 
-func (csp *ContentSecurityPolicy) create(directive Directive) {
+func (csp *ContentSecurityPolicy) create(directive CSPDirective) {
 	if len(directive) == 0 {
 		return
 	}
 	csp.cache = ""
 
 	if _, ok := csp.policies[directive]; !ok {
-		csp.policies[directive] = []string{}
+		csp.policies[directive] = []CSPSource{}
 	}
 }
 
 // Remove removes a directive and its sources.
-func (csp *ContentSecurityPolicy) Remove(directives ...Directive) {
+func (csp *ContentSecurityPolicy) Remove(directives ...CSPDirective) {
 	if len(directives) == 0 {
 		return
 	}
@@ -167,21 +172,21 @@ func (csp *ContentSecurityPolicy) String() string {
 		return csp.cache
 	}
 
-	var builder string
+	var policies = []string{}
 	for directive, sources := range csp.policies {
-		if len(builder) != 0 {
-			builder += " "
-		}
-
 		if len(sources) == 0 {
-			builder += fmt.Sprintf("%s;", directive)
-			continue
-		}
+			policies = append(policies, fmt.Sprintf("%s", directive))
+		} else {
+			sourcesAsStrings := []string{}
+			for _, source := range sources {
+				sourcesAsStrings = append(sourcesAsStrings, string(source))
+			}
 
-		builder += fmt.Sprintf("%s %s;", directive, strings.Join(sources, " "))
+			policies = append(policies, fmt.Sprintf("%s %s", directive, strings.Join(sourcesAsStrings, " ")))
+		}
 	}
 
-	csp.cache = builder
+	csp.cache = strings.Join(policies, "; ")
 	return csp.cache
 }
 

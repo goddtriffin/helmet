@@ -32,6 +32,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderContentSecurityPolicy, ""},
 		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
+		{HeaderFeaturePolicy, ""},
 		{HeaderPermittedCrossDomainPolicies, ""},
 	}
 
@@ -83,7 +84,10 @@ func TestHelmet_Secure_empty(t *testing.T) {
 	testCases := []struct {
 		header string
 	}{
-		{HeaderContentSecurityPolicy}, {HeaderDNSPrefetchControl}, {HeaderExpectCT},
+		{HeaderContentSecurityPolicy},
+		{HeaderDNSPrefetchControl},
+		{HeaderExpectCT},
+		{HeaderFeaturePolicy},
 		{HeaderPermittedCrossDomainPolicies},
 	}
 
@@ -129,11 +133,14 @@ func TestHelmet_Secure_custom(t *testing.T) {
 
 	// fill Helmet with custom parameters
 	helmet := Empty()
-	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[Directive][]string{
+	helmet.ContentSecurityPolicy = NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 		DirectiveDefaultSrc: {SourceNone},
 	})
 	helmet.DNSPrefetchControl = DNSPrefetchControlOn
 	helmet.ExpectCT = NewExpectCT(30, true, "/report-uri")
+	helmet.FeaturePolicy = NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
+		DirectiveGeolocation: {OriginSelf, OriginSrc},
+	})
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 
 	helmet.Secure(mockNext).ServeHTTP(rr, r)
@@ -143,9 +150,10 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		name   string
 		header string
 	}{
-		{HeaderContentSecurityPolicy, "default-src 'none';"},
+		{HeaderContentSecurityPolicy, "default-src 'none'"},
 		{HeaderDNSPrefetchControl, DNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
+		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 	}
 
