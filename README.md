@@ -28,7 +28,11 @@ func main() {
 }
 ```
 
-| Module                                                                                                     | Default Value(s)                  |
+## How It Works
+
+Helmet is a collection of 12 smaller middleware functions that set HTTP security response headers. Initializing via `helmet.Default()` will not include all of these middleware functions by default.
+
+| Module                                                                                                     | Default                           |
 | ---------------------------------------------------------------------------------------------------------- | --------------------------------- |
 | [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)                           |                                   |
 | [X-DNS-Prefetch-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control) | `off`                             |
