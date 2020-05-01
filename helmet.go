@@ -10,7 +10,7 @@ type Helmet struct {
 	XDNSPrefetchControl          XDNSPrefetchControl
 	ExpectCT                     *ExpectCT
 	FeaturePolicy                *FeaturePolicy
-	FrameOptions                 FrameOptions
+	XFrameOptions                XFrameOptions
 	PermittedCrossDomainPolicies PermittedCrossDomainPolicies
 	XPoweredBy                   *XPoweredBy
 }
@@ -22,7 +22,7 @@ func Default() *Helmet {
 		XDNSPrefetchControl:          XDNSPrefetchControlOff,
 		ExpectCT:                     EmptyExpectCT(),
 		FeaturePolicy:                EmptyFeaturePolicy(),
-		FrameOptions:                 FrameOptionsSameOrigin,
+		XFrameOptions:                XFrameOptionsSameOrigin,
 		PermittedCrossDomainPolicies: "",
 		XPoweredBy:                   NewXPoweredBy(true, ""),
 	}
@@ -45,7 +45,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.XDNSPrefetchControl.Header(w)
 		h.ExpectCT.Header(w)
 		h.FeaturePolicy.Header(w)
-		h.FrameOptions.Header(w)
+		h.XFrameOptions.Header(w)
 		h.PermittedCrossDomainPolicies.Header(w)
 		h.XPoweredBy.Header(w)
 

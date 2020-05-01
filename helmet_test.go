@@ -31,7 +31,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
 		{HeaderFeaturePolicy, ""},
-		{HeaderFrameOptions, FrameOptionsSameOrigin.String()},
+		{HeaderXFrameOptions, XFrameOptionsSameOrigin.String()},
 		{HeaderPermittedCrossDomainPolicies, ""},
 	}
 
@@ -76,7 +76,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		{HeaderXDNSPrefetchControl},
 		{HeaderExpectCT},
 		{HeaderFeaturePolicy},
-		{HeaderFrameOptions},
+		{HeaderXFrameOptions},
 		{HeaderPermittedCrossDomainPolicies},
 	}
 
@@ -110,7 +110,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.FeaturePolicy = NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 		DirectiveGeolocation: {OriginSelf, OriginSrc},
 	})
-	helmet.FrameOptions = FrameOptionsDeny
+	helmet.XFrameOptions = XFrameOptionsDeny
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
 
@@ -125,7 +125,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderXDNSPrefetchControl, XDNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
-		{HeaderFrameOptions, "DENY"},
+		{HeaderXFrameOptions, "DENY"},
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 		{HeaderXPoweredBy, "PHP 4.2.0"},
 	}
