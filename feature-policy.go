@@ -143,7 +143,7 @@ func (fp *FeaturePolicy) String() string {
 	return fp.cache
 }
 
-// Exists returns whether the FeaturePolicy contains any policies.
+// Exists returns whether the Feature-Policy contains any policies.
 func (fp *FeaturePolicy) Exists() bool {
 	if len(fp.policies) == 0 {
 		return false
@@ -152,7 +152,7 @@ func (fp *FeaturePolicy) Exists() bool {
 	return true
 }
 
-// AddHeader adds the FeaturePolicy HTTP header to the given ResponseWriter.
+// AddHeader adds the Feature-Policy HTTP security header to the given http.ResponseWriter.
 func (fp *FeaturePolicy) AddHeader(w http.ResponseWriter) {
 	if fp.Exists() {
 		w.Header().Set(HeaderFeaturePolicy, fp.String())

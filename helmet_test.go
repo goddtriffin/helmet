@@ -33,6 +33,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderDNSPrefetchControl, DNSPrefetchControlOff.String()},
 		{HeaderExpectCT, ""},
 		{HeaderFeaturePolicy, ""},
+		{HeaderFrameOptions, FrameOptionsSameOrigin.String()},
 		{HeaderPermittedCrossDomainPolicies, ""},
 	}
 
@@ -88,6 +89,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		{HeaderDNSPrefetchControl},
 		{HeaderExpectCT},
 		{HeaderFeaturePolicy},
+		{HeaderFrameOptions},
 		{HeaderPermittedCrossDomainPolicies},
 	}
 
@@ -141,6 +143,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.FeaturePolicy = NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 		DirectiveGeolocation: {OriginSelf, OriginSrc},
 	})
+	helmet.FrameOptions = FrameOptionsDeny
 	helmet.PermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 
 	helmet.Secure(mockNext).ServeHTTP(rr, r)
@@ -154,6 +157,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderDNSPrefetchControl, DNSPrefetchControlOn.String()},
 		{HeaderExpectCT, `max-age=30, enforce, report-uri="/report-uri"`},
 		{HeaderFeaturePolicy, "geolocation 'self' 'src'"},
+		{HeaderFrameOptions, "DENY"},
 		{HeaderPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 	}
 

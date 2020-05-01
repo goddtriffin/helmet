@@ -57,17 +57,17 @@ func (ect *ExpectCT) String() string {
 	return ect.cache
 }
 
-// Exists returns whether the ExpectCT has been set.
+// Exists returns whether the Expect-CT has been set.
 func (ect *ExpectCT) Exists() bool {
 	if ect.MaxAge == 0 {
-		// enfore and report-uri are optional
+		// enforce and report-uri are optional
 		return false
 	}
 
 	return true
 }
 
-// AddHeader adds the Expect-CT HTTP header to the given ResponseWriter.
+// AddHeader adds the Expect-CT HTTP security header to the given http.ResponseWriter.
 func (ect *ExpectCT) AddHeader(w http.ResponseWriter) {
 	if ect.Exists() {
 		w.Header().Set(HeaderExpectCT, ect.String())
