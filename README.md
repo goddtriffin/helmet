@@ -46,4 +46,6 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 
 #
 
+Helmet is open source under the [MIT License](https://github.com/MagnusFrater/helmet/blob/master/LICENSE).
+
 Icon by [Hand-Drawn Goods](https://www.iconfinder.com/handdrawngoods), licensed under a [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
