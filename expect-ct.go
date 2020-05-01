@@ -14,11 +14,17 @@ const DirectiveEnforce ExpectCTDirective = "enforce"
 
 // ExpectCTDirectiveMaxAge is the Expect-CT MaxAge directive.
 func ExpectCTDirectiveMaxAge(maxAge int) ExpectCTDirective {
+	if maxAge <= 0 {
+		return ""
+	}
 	return ExpectCTDirective(fmt.Sprintf("max-age=%d", maxAge))
 }
 
 // ExpectCTDirectiveReportURI is the Expect-CT ReportURI directive.
 func ExpectCTDirectiveReportURI(reportURI string) ExpectCTDirective {
+	if reportURI == "" {
+		return ""
+	}
 	return ExpectCTDirective(fmt.Sprintf(`report-uri="%s"`, reportURI))
 }
 
@@ -56,7 +62,7 @@ func (ect *ExpectCT) String() string {
 	}
 
 	// max age is not optional
-	if ect.MaxAge == 0 {
+	if ect.MaxAge <= 0 {
 		ect.cache = ""
 		return ect.cache
 	}

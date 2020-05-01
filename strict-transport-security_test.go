@@ -2,6 +2,33 @@ package helmet
 
 import "testing"
 
+func TestStrictTransportSecurity_DirectiveMaxAge(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name              string
+		maxAge            int
+		expectedDirective HSTSDirective
+	}{
+		{name: "0", maxAge: 0, expectedDirective: ""},
+		{name: "-1", maxAge: -1, expectedDirective: ""},
+		{name: "1", maxAge: 1, expectedDirective: "max-age=1"},
+		{name: "2 years", maxAge: 63072000, expectedDirective: "max-age=63072000"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			directive := HSTSDirectiveMaxAge(tc.maxAge)
+			if directive != tc.expectedDirective {
+				t.Errorf("Incorrect MaxAge\tExpected: %s\tActual: %s\n", tc.expectedDirective, directive)
+			}
+		})
+	}
+}
+
 func TestStrictTransportSecurity_New(t *testing.T) {
 	t.Parallel()
 

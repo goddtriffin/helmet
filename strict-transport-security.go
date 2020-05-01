@@ -16,6 +16,9 @@ const (
 
 // HSTSDirectiveMaxAge is the Strict-Transport-Security MaxAge directive.
 func HSTSDirectiveMaxAge(maxAge int) HSTSDirective {
+	if maxAge <= 0 {
+		return ""
+	}
 	return HSTSDirective(fmt.Sprintf("max-age=%d", maxAge))
 }
 
@@ -58,7 +61,7 @@ func (hsts *StrictTransportSecurity) String() string {
 	}
 
 	// max age is not optional
-	if hsts.MaxAge == 0 {
+	if hsts.MaxAge <= 0 {
 		hsts.cache = ""
 		return hsts.cache
 	}

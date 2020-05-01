@@ -4,6 +4,58 @@ import (
 	"testing"
 )
 
+func TestExpectCT_DirectiveMaxAge(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name              string
+		maxAge            int
+		expectedDirective ExpectCTDirective
+	}{
+		{name: "0", maxAge: 0, expectedDirective: ""},
+		{name: "-1", maxAge: -1, expectedDirective: ""},
+		{name: "1", maxAge: 1, expectedDirective: "max-age=1"},
+		{name: "1 day", maxAge: 86400, expectedDirective: "max-age=86400"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			directive := ExpectCTDirectiveMaxAge(tc.maxAge)
+			if directive != tc.expectedDirective {
+				t.Errorf("Incorrect MaxAge\tExpected: %s\tActual: %s\n", tc.expectedDirective, directive)
+			}
+		})
+	}
+}
+
+func TestExpectCT_DirectiveReportURI(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name              string
+		reportURI         string
+		expectedDirective ExpectCTDirective
+	}{
+		{name: "Empty", reportURI: "", expectedDirective: ""},
+		{name: "Not empty", reportURI: "/report-uri", expectedDirective: `report-uri="/report-uri"`},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			directive := ExpectCTDirectiveReportURI(tc.reportURI)
+			if directive != tc.expectedDirective {
+				t.Errorf("Incorrect ReportURI\tExpected: %s\tActual: %s\n", tc.expectedDirective, directive)
+			}
+		})
+	}
+}
+
 func TestExpectCT_New(t *testing.T) {
 	t.Parallel()
 
