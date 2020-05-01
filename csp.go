@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-// HeaderContentSecurityPolicy is the Content Security Policy HTTP security header.
+// HeaderContentSecurityPolicy is the Content-Security-Policy HTTP security header.
 const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
-// List of all Content Security Policy directives.
+// List of all Content-Security-Policy directives.
 const (
 	DirectiveBaseURI                 CSPDirective = "base-uri"
 	DirectiveBlockAllMixedContent    CSPDirective = "block-all-mixed-content"
@@ -41,11 +41,11 @@ const (
 
 	// deprecated
 	DeprecatedDirectiveReferrer      CSPDirective = "referrer"   // use 'Referrer-Policy' HTTP header instead
-	DeprecatedDirectiveReportURI     CSPDirective = "report-uri" // use 'report-to' CSP directive instead
+	DeprecatedDirectiveReportURI     CSPDirective = "report-uri" // use 'report-to' Content-Security-Policy directive instead
 	DeprecatedDirectiveRequireSriFor CSPDirective = "require-sri-for"
 )
 
-// List of all Content Security Policy sources.
+// List of all Content-Security-Policy sources.
 const (
 	SourceWildcard      CSPSource = "*"
 	SourceNone          CSPSource = "'none'"
@@ -96,10 +96,10 @@ const (
 )
 
 type (
-	// CSPDirective represents a Content Security Policy directive.
+	// CSPDirective represents a Content-Security-Policy directive.
 	CSPDirective string
 
-	// CSPSource represents a Content Security Policy source.
+	// CSPSource represents a Content-Security-Policy source.
 	CSPSource string
 
 	// ContentSecurityPolicy represents the Content-Security-Policy HTTP security header.
@@ -190,7 +190,7 @@ func (csp *ContentSecurityPolicy) String() string {
 	return csp.cache
 }
 
-// Exists returns whether the Content Security Policy contains any policies.
+// Exists returns whether the Content-Security-Policy contains any policies.
 func (csp *ContentSecurityPolicy) Exists() bool {
 	if len(csp.policies) == 0 {
 		return false
@@ -199,7 +199,7 @@ func (csp *ContentSecurityPolicy) Exists() bool {
 	return true
 }
 
-// AddHeader adds the Content Security Policy HTTP header to the given ResponseWriter.
+// AddHeader adds the Content-Security-Policy HTTP security header to the given http.ResponseWriter.
 func (csp *ContentSecurityPolicy) AddHeader(w http.ResponseWriter) {
 	if csp.Exists() {
 		w.Header().Set(HeaderContentSecurityPolicy, csp.String())
