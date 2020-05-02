@@ -27,16 +27,16 @@ func TestXDownloadOptions_String(t *testing.T) {
 	}
 }
 
-func TestXDownloadOptions_Exists(t *testing.T) {
+func TestXDownloadOptions_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name             string
 		xDownloadOptions XDownloadOptions
-		expectedExists   bool
+		expectedEmpty    bool
 	}{
-		{name: "Empty", xDownloadOptions: "", expectedExists: false},
-		{name: "No Open", xDownloadOptions: XDownloadOptionsNoOpen, expectedExists: true},
+		{name: "Empty", xDownloadOptions: "", expectedEmpty: true},
+		{name: "No Open", xDownloadOptions: XDownloadOptionsNoOpen, expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -44,9 +44,9 @@ func TestXDownloadOptions_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xDownloadOptions.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xDownloadOptions.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

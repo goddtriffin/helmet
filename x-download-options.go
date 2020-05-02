@@ -15,18 +15,14 @@ func (xdo XDownloadOptions) String() string {
 	return string(xdo)
 }
 
-// Exists returns whether the X-Download-Options has been set.
-func (xdo XDownloadOptions) Exists() bool {
-	if xdo.String() == "" {
-		return false
-	}
-
-	return true
+// Empty returns whether the X-Download-Options is empty.
+func (xdo XDownloadOptions) Empty() bool {
+	return xdo.String() == ""
 }
 
 // Header adds the X-Download-Options HTTP security header to the given http.ResponseWriter.
 func (xdo XDownloadOptions) Header(w http.ResponseWriter) {
-	if xdo.Exists() {
+	if !xdo.Empty() {
 		w.Header().Set(HeaderXDownloadOptions, xdo.String())
 	}
 }
