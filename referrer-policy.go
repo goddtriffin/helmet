@@ -36,7 +36,11 @@ type (
 
 // NewReferrerPolicy creates a new Referrer-Policy.
 func NewReferrerPolicy(directives ...ReferrerPolicyDirective) *ReferrerPolicy {
-	return &ReferrerPolicy{directives, ""}
+	rp := &ReferrerPolicy{[]ReferrerPolicyDirective{}, ""}
+	for _, directive := range directives {
+		rp.policies = append(rp.policies, directive)
+	}
+	return rp
 }
 
 // EmptyReferrerPolicy creates a blank slate Referrer-Policy.
@@ -58,14 +62,14 @@ func (rp *ReferrerPolicy) String() string {
 	return rp.cache
 }
 
-// Exists returns whether the Referrer-Policy has been set.
-func (rp *ReferrerPolicy) Exists() bool {
-	return len(rp.policies) > 0
+// Empty returns whether the Referrer-Policy is empty.
+func (rp *ReferrerPolicy) Empty() bool {
+	return len(rp.policies) == 0
 }
 
 // Header adds the Referrer-Policy HTTP header to the given http.ResponseWriter.
 func (rp *ReferrerPolicy) Header(w http.ResponseWriter) {
-	if rp.Exists() {
+	if !rp.Empty() {
 		w.Header().Set(HeaderReferrerPolicy, rp.String())
 	}
 }

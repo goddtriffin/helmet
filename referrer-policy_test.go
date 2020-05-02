@@ -4,6 +4,60 @@ import (
 	"testing"
 )
 
+func TestReferrerPolicy_NewReferrerPolicy(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name       string
+		directives []ReferrerPolicyDirective
+	}{
+		{name: "Zero Directives", directives: []ReferrerPolicyDirective{}},
+		{name: "Single Directive", directives: []ReferrerPolicyDirective{DirectiveNoReferrer}},
+		{name: "Multiple Directives", directives: []ReferrerPolicyDirective{DirectiveNoReferrer, DirectiveStrictOriginWhenCrossOrigin}},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			rp := NewReferrerPolicy(tc.directives...)
+
+			if len(rp.policies) != len(tc.directives) {
+				t.Errorf("Length doesn't match\tExpected: %d\tActual: %d\n", len(tc.directives), len(rp.policies))
+			}
+
+			for i, directive := range rp.policies {
+				if directive != tc.directives[i] {
+					t.Errorf("Missing directive\tIndex: %d\tExpected: %s\n", i, directive)
+				}
+			}
+
+			if rp.cache != "" {
+				t.Errorf("Cache should not be set\tCache: %s\n", rp.cache)
+			}
+		})
+	}
+}
+
+func TestReferrerPolicy_EmptyReferrerPolicy(t *testing.T) {
+	t.Parallel()
+
+	rp := EmptyReferrerPolicy()
+
+	if rp.policies == nil {
+		t.Errorf("Policies should not be nil\n")
+	}
+
+	if len(rp.policies) != 0 {
+		t.Errorf("There should be zero directives\n")
+	}
+
+	if rp.cache != "" {
+		t.Errorf("Cache should not be set\tActual: %s\n", rp.cache)
+	}
+}
+
 func TestReferrerPolicy_String(t *testing.T) {
 	t.Parallel()
 
@@ -49,24 +103,24 @@ func TestReferrerPolicy_String(t *testing.T) {
 	}
 }
 
-func TestReferrer_Exists(t *testing.T) {
+func TestReferrer_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name           string
 		referrerPolicy *ReferrerPolicy
-		expectedExists bool
+		expectedEmpty  bool
 	}{
-		{name: "Empty", referrerPolicy: EmptyReferrerPolicy(), expectedExists: false},
+		{name: "Empty", referrerPolicy: EmptyReferrerPolicy(), expectedEmpty: true},
 		{
 			name:           "Single Directive",
 			referrerPolicy: NewReferrerPolicy(DirectiveNoReferrer),
-			expectedExists: true,
+			expectedEmpty:  false,
 		},
 		{
 			name:           "Multiple Directives",
 			referrerPolicy: NewReferrerPolicy(DirectiveNoReferrer, DirectiveStrictOriginWhenCrossOrigin),
-			expectedExists: true,
+			expectedEmpty:  false,
 		},
 	}
 
@@ -75,9 +129,9 @@ func TestReferrer_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.referrerPolicy.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.referrerPolicy.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}
