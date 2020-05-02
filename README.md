@@ -1,6 +1,6 @@
-# Helmet
-
 ![HelmetJS logo](docs/logo.svg)
+
+# Helmet
 
 HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
@@ -29,6 +29,8 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 ```
+
+<small>This code sample can be found in `/examples/01-quick-start`</small>
 
 ## How It Works
 
