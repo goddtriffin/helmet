@@ -24,18 +24,14 @@ func EmptyXPoweredBy() *XPoweredBy {
 	return NewXPoweredBy(false, "")
 }
 
-// Exists returns whether the X-Powered-By has been set.
-func (xpb XPoweredBy) Exists() bool {
-	if xpb.Hide || xpb.Replacement != "" {
-		return true
-	}
-
-	return false
+// Empty returns whether the X-Powered-By is empty.
+func (xpb XPoweredBy) Empty() bool {
+	return !xpb.Hide && xpb.Replacement == ""
 }
 
 // Header adds the X-Powered-By HTTP security header to the given http.ResponseWriter.
 func (xpb XPoweredBy) Header(w http.ResponseWriter) {
-	if !xpb.Exists() {
+	if xpb.Empty() {
 		return
 	}
 
