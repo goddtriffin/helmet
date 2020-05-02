@@ -83,19 +83,15 @@ func (hsts *StrictTransportSecurity) String() string {
 	return hsts.cache
 }
 
-// Exists returns whether the Strict-Transport-Security has been set.
-func (hsts *StrictTransportSecurity) Exists() bool {
-	if hsts.MaxAge == 0 {
-		// includeSubDomains and preload are optional
-		return false
-	}
-
-	return true
+// Empty returns whether the Strict-Transport-Security is empty.
+func (hsts *StrictTransportSecurity) Empty() bool {
+	// includeSubDomains and preload are optional
+	return hsts.MaxAge == 0
 }
 
 // Header adds the Strict-Transport-Security HTTP security header to the given http.ResponseWriter.
 func (hsts *StrictTransportSecurity) Header(w http.ResponseWriter) {
-	if hsts.Exists() {
+	if !hsts.Empty() {
 		w.Header().Set(HeaderStrictTransportSecurity, hsts.String())
 	}
 }
