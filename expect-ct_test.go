@@ -56,7 +56,7 @@ func TestExpectCT_DirectiveReportURI(t *testing.T) {
 	}
 }
 
-func TestExpectCT_New(t *testing.T) {
+func TestExpectCT_NewExpectCT(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -101,7 +101,7 @@ func TestExpectCT_New(t *testing.T) {
 	}
 }
 
-func TestExpectCT_Empty(t *testing.T) {
+func TestExpectCT_EmptyExpectCT(t *testing.T) {
 	t.Parallel()
 
 	ect := EmptyExpectCT()
@@ -163,17 +163,17 @@ func TestExpectCT_String(t *testing.T) {
 	}
 }
 
-func TestExpectCT_Exists(t *testing.T) {
+func TestExpectCT_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		expectCT       *ExpectCT
-		expectedExists bool
+		name          string
+		expectCT      *ExpectCT
+		expectedEmpty bool
 	}{
-		{name: "Empty", expectCT: EmptyExpectCT(), expectedExists: false},
-		{name: "Max Age Zero", expectCT: NewExpectCT(0, false, ""), expectedExists: false},
-		{name: "Max Age Set", expectCT: NewExpectCT(30, false, ""), expectedExists: true},
+		{name: "Empty", expectCT: EmptyExpectCT(), expectedEmpty: true},
+		{name: "Max Age Zero", expectCT: NewExpectCT(0, false, ""), expectedEmpty: true},
+		{name: "Max Age Set", expectCT: NewExpectCT(30, false, ""), expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -181,9 +181,9 @@ func TestExpectCT_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.expectCT.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.expectCT.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestXPoweredBy_New(t *testing.T) {
+func TestXPoweredBy_NewXPoweredBy(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -36,7 +36,7 @@ func TestXPoweredBy_New(t *testing.T) {
 	}
 }
 
-func TestXPoweredBy_Empty(t *testing.T) {
+func TestXPoweredBy_EmptyXPoweredBy(t *testing.T) {
 	t.Parallel()
 
 	xpb := EmptyXPoweredBy()
@@ -50,18 +50,18 @@ func TestXPoweredBy_Empty(t *testing.T) {
 	}
 }
 
-func TestXPoweredBy_Exists(t *testing.T) {
+func TestXPoweredBy_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		xPoweredBy     *XPoweredBy
-		expectedExists bool
+		name          string
+		xPoweredBy    *XPoweredBy
+		expectedEmpty bool
 	}{
-		{name: "Empty", xPoweredBy: EmptyXPoweredBy(), expectedExists: false},
-		{name: "Hide", xPoweredBy: NewXPoweredBy(true, ""), expectedExists: true},
-		{name: "Replacement", xPoweredBy: NewXPoweredBy(false, "PHP 4.2.0"), expectedExists: true},
-		{name: "Hide, Replacement", xPoweredBy: NewXPoweredBy(true, "PHP 4.2.0"), expectedExists: true},
+		{name: "Empty", xPoweredBy: EmptyXPoweredBy(), expectedEmpty: true},
+		{name: "Hide", xPoweredBy: NewXPoweredBy(true, ""), expectedEmpty: false},
+		{name: "Replacement", xPoweredBy: NewXPoweredBy(false, "PHP 4.2.0"), expectedEmpty: false},
+		{name: "Hide, Replacement", xPoweredBy: NewXPoweredBy(true, "PHP 4.2.0"), expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -69,9 +69,9 @@ func TestXPoweredBy_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xPoweredBy.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xPoweredBy.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

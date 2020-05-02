@@ -28,17 +28,17 @@ func TestXFrameOptions_String(t *testing.T) {
 	}
 }
 
-func TestFrameOptions_Exists(t *testing.T) {
+func TestFrameOptions_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		xFrameOptions  XFrameOptions
-		expectedExists bool
+		name          string
+		xFrameOptions XFrameOptions
+		expectedEmpty bool
 	}{
-		{name: "Empty", xFrameOptions: "", expectedExists: false},
-		{name: "Deny", xFrameOptions: XFrameOptionsDeny, expectedExists: true},
-		{name: "Same Origin", xFrameOptions: XFrameOptionsSameOrigin, expectedExists: true},
+		{name: "Empty", xFrameOptions: "", expectedEmpty: true},
+		{name: "Deny", xFrameOptions: XFrameOptionsDeny, expectedEmpty: false},
+		{name: "Same Origin", xFrameOptions: XFrameOptionsSameOrigin, expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -46,9 +46,9 @@ func TestFrameOptions_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xFrameOptions.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xFrameOptions.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

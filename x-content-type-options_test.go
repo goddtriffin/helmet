@@ -27,16 +27,16 @@ func TestXContentTypeOptions_String(t *testing.T) {
 	}
 }
 
-func TestXContentTypeOptions_Exists(t *testing.T) {
+func TestXContentTypeOptions_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name                string
 		xContentTypeOptions XContentTypeOptions
-		expectedExists      bool
+		expectedEmpty       bool
 	}{
-		{name: "Empty", xContentTypeOptions: "", expectedExists: false},
-		{name: "No Open", xContentTypeOptions: XContentTypeOptionsNoSniff, expectedExists: true},
+		{name: "Empty", xContentTypeOptions: "", expectedEmpty: true},
+		{name: "No Open", xContentTypeOptions: XContentTypeOptionsNoSniff, expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -44,9 +44,9 @@ func TestXContentTypeOptions_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xContentTypeOptions.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xContentTypeOptions.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

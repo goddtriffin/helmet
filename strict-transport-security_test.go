@@ -29,7 +29,7 @@ func TestStrictTransportSecurity_DirectiveMaxAge(t *testing.T) {
 	}
 }
 
-func TestStrictTransportSecurity_New(t *testing.T) {
+func TestStrictTransportSecurity_NewStrictTransportSecurity(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -74,7 +74,7 @@ func TestStrictTransportSecurity_New(t *testing.T) {
 	}
 }
 
-func TestStrictTransportSecurity_Empty(t *testing.T) {
+func TestStrictTransportSecurity_EmptyStrictTransportSecurity(t *testing.T) {
 	t.Parallel()
 
 	hsts := EmptyStrictTransportSecurity()
@@ -136,17 +136,17 @@ func TestStrictTransportSecurity_String(t *testing.T) {
 	}
 }
 
-func TestStrictTransportSecurity_Exists(t *testing.T) {
+func TestStrictTransportSecurity_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		hsts           *StrictTransportSecurity
-		expectedExists bool
+		name          string
+		hsts          *StrictTransportSecurity
+		expectedEmpty bool
 	}{
-		{name: "Empty", hsts: EmptyStrictTransportSecurity(), expectedExists: false},
-		{name: "Max Age Zero", hsts: NewStrictTransportSecurity(0, false, false), expectedExists: false},
-		{name: "Max Age Set", hsts: NewStrictTransportSecurity(63072000, false, false), expectedExists: true},
+		{name: "Empty", hsts: EmptyStrictTransportSecurity(), expectedEmpty: true},
+		{name: "Max Age Zero", hsts: NewStrictTransportSecurity(0, false, false), expectedEmpty: true},
+		{name: "Max Age Set", hsts: NewStrictTransportSecurity(63072000, false, false), expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -154,9 +154,9 @@ func TestStrictTransportSecurity_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.hsts.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.hsts.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

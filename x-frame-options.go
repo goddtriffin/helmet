@@ -18,18 +18,14 @@ func (xfo XFrameOptions) String() string {
 	return string(xfo)
 }
 
-// Exists returns whether the X-Frame-Options has been set.
-func (xfo XFrameOptions) Exists() bool {
-	if xfo.String() == "" {
-		return false
-	}
-
-	return true
+// Empty returns whether the X-Frame-Options is empty.
+func (xfo XFrameOptions) Empty() bool {
+	return xfo.String() == ""
 }
 
 // Header adds the X-Frame-Options HTTP header to the given http.ResponseWriter.
 func (xfo XFrameOptions) Header(w http.ResponseWriter) {
-	if xfo.Exists() {
+	if !xfo.Empty() {
 		w.Header().Set(HeaderXFrameOptions, xfo.String())
 	}
 }

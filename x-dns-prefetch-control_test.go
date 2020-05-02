@@ -28,17 +28,17 @@ func TestXDNSPrefetchControl_String(t *testing.T) {
 	}
 }
 
-func TestXDNSPrefetchControl_Exists(t *testing.T) {
+func TestXDNSPrefetchControl_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name                string
 		xDNSPrefetchControl XDNSPrefetchControl
-		expectedExists      bool
+		expectedEmpty       bool
 	}{
-		{name: "Empty", xDNSPrefetchControl: "", expectedExists: false},
-		{name: "On", xDNSPrefetchControl: XDNSPrefetchControlOn, expectedExists: true},
-		{name: "Off", xDNSPrefetchControl: XDNSPrefetchControlOff, expectedExists: true},
+		{name: "Empty", xDNSPrefetchControl: "", expectedEmpty: true},
+		{name: "On", xDNSPrefetchControl: XDNSPrefetchControlOn, expectedEmpty: false},
+		{name: "Off", xDNSPrefetchControl: XDNSPrefetchControlOff, expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -46,9 +46,9 @@ func TestXDNSPrefetchControl_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xDNSPrefetchControl.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xDNSPrefetchControl.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

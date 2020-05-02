@@ -18,18 +18,14 @@ func (dns XDNSPrefetchControl) String() string {
 	return string(dns)
 }
 
-// Exists returns whether the X-DNS-Prefetch-Control has been set.
-func (dns XDNSPrefetchControl) Exists() bool {
-	if dns.String() == "" {
-		return false
-	}
-
-	return true
+// Empty returns whether the X-DNS-Prefetch-Control is empty.
+func (dns XDNSPrefetchControl) Empty() bool {
+	return dns.String() == ""
 }
 
 // Header adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
 func (dns XDNSPrefetchControl) Header(w http.ResponseWriter) {
-	if dns.Exists() {
+	if !dns.Empty() {
 		w.Header().Set(HeaderXDNSPrefetchControl, dns.String())
 	}
 }

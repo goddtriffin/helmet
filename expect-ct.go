@@ -83,19 +83,15 @@ func (ect *ExpectCT) String() string {
 	return ect.cache
 }
 
-// Exists returns whether the Expect-CT has been set.
-func (ect *ExpectCT) Exists() bool {
-	if ect.MaxAge == 0 {
-		// enforce and report-uri are optional
-		return false
-	}
-
-	return true
+// Empty returns whether the Expect-CT is empty.
+func (ect *ExpectCT) Empty() bool {
+	// enforce and report-uri are optional
+	return ect.MaxAge == 0
 }
 
 // Header adds the Expect-CT HTTP security header to the given http.ResponseWriter.
 func (ect *ExpectCT) Header(w http.ResponseWriter) {
-	if ect.Exists() {
+	if !ect.Empty() {
 		w.Header().Set(HeaderExpectCT, ect.String())
 	}
 }

@@ -1,6 +1,6 @@
-# Helmet
-
 ![HelmetJS logo](docs/logo.svg)
+
+# Helmet
 
 HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
@@ -30,6 +30,8 @@ func main() {
 }
 ```
 
+<small>This code sample can be found in `/examples/01-quick-start`</small>
+
 ## How It Works
 
 Helmet is a collection of 12 smaller middleware functions that set HTTP security response headers. Initializing via `helmet.Default()` will not include all of these middleware functions by default.
@@ -45,6 +47,7 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)                     | `SAMEORIGIN`                                   |
 | [X-Permitted-Cross-Domain-Policies](https://helmetjs.github.io/docs/crossdomain/)                                |                                                |
 | [X-Powered-By](https://helmetjs.github.io/docs/hide-powered-by/)                                                 | Removes the `X-Powered-By` header              |
+| [Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy)                     |                                                |
 | [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) | `max-age=5184000; includeSubDomains` (60 days) |
 
 #

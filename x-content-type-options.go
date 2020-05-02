@@ -15,18 +15,14 @@ func (xcto XContentTypeOptions) String() string {
 	return string(xcto)
 }
 
-// Exists returns whether the X-Content-Type-Options has been set.
-func (xcto XContentTypeOptions) Exists() bool {
-	if xcto.String() == "" {
-		return false
-	}
-
-	return true
+// Empty returns whether the X-Content-Type-Options is empty.
+func (xcto XContentTypeOptions) Empty() bool {
+	return xcto.String() == ""
 }
 
 // Header adds the X-Content-Type-Options HTTP security header to the given http.ResponseWriter.
 func (xcto XContentTypeOptions) Header(w http.ResponseWriter) {
-	if xcto.Exists() {
+	if !xcto.Empty() {
 		w.Header().Set(HeaderXContentTypeOptions, xcto.String())
 	}
 }

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestFeaturePolicy_New(t *testing.T) {
+func TestFeaturePolicy_NewFeaturePolicy(t *testing.T) {
 	t.Parallel()
 
 	t.Run("Nil", func(t *testing.T) {
@@ -77,7 +77,7 @@ func TestFeaturePolicy_New(t *testing.T) {
 	}
 }
 
-func TestFeaturePolicy_Empty(t *testing.T) {
+func TestFeaturePolicy_EmptyFeaturePolicy(t *testing.T) {
 	t.Parallel()
 
 	fp := EmptyFeaturePolicy()
@@ -285,22 +285,22 @@ func TestFeaturePolicy_String(t *testing.T) {
 	}
 }
 
-func TestFeaturePolicy_Exists(t *testing.T) {
+func TestFeaturePolicy_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		fp             *FeaturePolicy
-		expectedExists bool
+		name          string
+		fp            *FeaturePolicy
+		expectedEmpty bool
 	}{
-		{name: "Empty", fp: EmptyFeaturePolicy(), expectedExists: false},
-		{name: "Nil", fp: NewFeaturePolicy(nil), expectedExists: false},
+		{name: "Empty", fp: EmptyFeaturePolicy(), expectedEmpty: true},
+		{name: "Nil", fp: NewFeaturePolicy(nil), expectedEmpty: true},
 		{
 			name: "Single Directive",
 			fp: NewFeaturePolicy(map[FeaturePolicyDirective][]FeaturePolicyOrigin{
 				DirectiveMicrophone: {OriginNone},
 			}),
-			expectedExists: true,
+			expectedEmpty: false,
 		},
 	}
 
@@ -309,9 +309,9 @@ func TestFeaturePolicy_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.fp.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.fp.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}
