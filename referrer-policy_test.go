@@ -23,11 +23,11 @@ func TestReferrerPolicy_NewReferrerPolicy(t *testing.T) {
 
 			rp := NewReferrerPolicy(tc.directives...)
 
-			if len(rp.policies) != len(tc.directives) {
-				t.Errorf("Length doesn't match\tExpected: %d\tActual: %d\n", len(tc.directives), len(rp.policies))
+			if len(rp.directives) != len(tc.directives) {
+				t.Errorf("Length doesn't match\tExpected: %d\tActual: %d\n", len(tc.directives), len(rp.directives))
 			}
 
-			for i, directive := range rp.policies {
+			for i, directive := range rp.directives {
 				if directive != tc.directives[i] {
 					t.Errorf("Missing directive\tIndex: %d\tExpected: %s\n", i, directive)
 				}
@@ -45,11 +45,11 @@ func TestReferrerPolicy_EmptyReferrerPolicy(t *testing.T) {
 
 	rp := EmptyReferrerPolicy()
 
-	if rp.policies == nil {
+	if rp.directives == nil {
 		t.Errorf("Policies should not be nil\n")
 	}
 
-	if len(rp.policies) != 0 {
+	if len(rp.directives) != 0 {
 		t.Errorf("There should be zero directives\n")
 	}
 

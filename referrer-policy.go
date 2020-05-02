@@ -28,7 +28,7 @@ type (
 	ReferrerPolicy struct {
 		// Make note that if there is more than 1 directive, the desired directive should be specified last.
 		// Every other directive is a fallback, prioritized in the order from right-to-left.
-		policies []ReferrerPolicyDirective
+		directives []ReferrerPolicyDirective
 
 		cache string
 	}
@@ -38,7 +38,7 @@ type (
 func NewReferrerPolicy(directives ...ReferrerPolicyDirective) *ReferrerPolicy {
 	rp := &ReferrerPolicy{[]ReferrerPolicyDirective{}, ""}
 	for _, directive := range directives {
-		rp.policies = append(rp.policies, directive)
+		rp.directives = append(rp.directives, directive)
 	}
 	return rp
 }
@@ -54,7 +54,7 @@ func (rp *ReferrerPolicy) String() string {
 	}
 
 	directivesAsStrings := []string{}
-	for _, directive := range rp.policies {
+	for _, directive := range rp.directives {
 		directivesAsStrings = append(directivesAsStrings, string(directive))
 	}
 
@@ -64,7 +64,7 @@ func (rp *ReferrerPolicy) String() string {
 
 // Empty returns whether the Referrer-Policy is empty.
 func (rp *ReferrerPolicy) Empty() bool {
-	return len(rp.policies) == 0
+	return len(rp.directives) == 0
 }
 
 // Header adds the Referrer-Policy HTTP header to the given http.ResponseWriter.
