@@ -190,18 +190,14 @@ func (csp *ContentSecurityPolicy) String() string {
 	return csp.cache
 }
 
-// Exists returns whether the Content-Security-Policy contains any policies.
-func (csp *ContentSecurityPolicy) Exists() bool {
-	if len(csp.policies) == 0 {
-		return false
-	}
-
-	return true
+// Empty returns whether the Content-Security-Policy is empty.
+func (csp *ContentSecurityPolicy) Empty() bool {
+	return len(csp.policies) == 0
 }
 
 // Header adds the Content-Security-Policy HTTP security header to the given http.ResponseWriter.
 func (csp *ContentSecurityPolicy) Header(w http.ResponseWriter) {
-	if csp.Exists() {
+	if !csp.Empty() {
 		w.Header().Set(HeaderContentSecurityPolicy, csp.String())
 	}
 }

@@ -292,22 +292,22 @@ func TestCSP_String(t *testing.T) {
 	}
 }
 
-func TestCSP_Exists(t *testing.T) {
+func TestCSP_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		csp            *ContentSecurityPolicy
-		expectedExists bool
+		name          string
+		csp           *ContentSecurityPolicy
+		expectedEmpty bool
 	}{
-		{name: "Empty", csp: EmptyContentSecurityPolicy(), expectedExists: false},
-		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedExists: false},
+		{name: "Empty", csp: EmptyContentSecurityPolicy(), expectedEmpty: true},
+		{name: "Nil", csp: NewContentSecurityPolicy(nil), expectedEmpty: true},
 		{
 			name: "Single Directive",
 			csp: NewContentSecurityPolicy(map[CSPDirective][]CSPSource{
 				DirectiveDefaultSrc: {SourceNone},
 			}),
-			expectedExists: true,
+			expectedEmpty: false,
 		},
 	}
 
@@ -316,9 +316,9 @@ func TestCSP_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.csp.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.csp.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}
