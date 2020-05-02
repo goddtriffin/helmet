@@ -58,14 +58,14 @@ type (
 
 	// FeaturePolicyOrigin represents a Feature-Policy origin.
 	FeaturePolicyOrigin string
+
+	// FeaturePolicy represents the Feature-Policy HTTP security header.
+	FeaturePolicy struct {
+		policies map[FeaturePolicyDirective][]FeaturePolicyOrigin
+
+		cache string
+	}
 )
-
-// FeaturePolicy represents the Feature-Policy HTTP security header.
-type FeaturePolicy struct {
-	policies map[FeaturePolicyDirective][]FeaturePolicyOrigin
-
-	cache string
-}
 
 // NewFeaturePolicy creates a new Feature-Policy.
 func NewFeaturePolicy(policies map[FeaturePolicyDirective][]FeaturePolicyOrigin) *FeaturePolicy {

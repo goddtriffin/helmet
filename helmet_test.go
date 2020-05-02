@@ -35,6 +35,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderFeaturePolicy, ""},
 		{HeaderXFrameOptions, XFrameOptionsSameOrigin.String()},
 		{HeaderXPermittedCrossDomainPolicies, ""},
+		{HeaderReferrerPolicy, ""},
 		{HeaderStrictTransportSecurity, "max-age=5184000; includeSubDomains"},
 	}
 
@@ -83,6 +84,7 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		{HeaderFeaturePolicy},
 		{HeaderXFrameOptions},
 		{HeaderXPermittedCrossDomainPolicies},
+		{HeaderReferrerPolicy},
 		{HeaderStrictTransportSecurity},
 	}
 
@@ -121,6 +123,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.XFrameOptions = XFrameOptionsDeny
 	helmet.XPermittedCrossDomainPolicies = PermittedCrossDomainPoliciesAll
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
+	helmet.ReferrerPolicy = NewReferrerPolicy(DirectiveNoReferrer, DirectiveStrictOriginWhenCrossOrigin)
 	helmet.StrictTransportSecurity = NewStrictTransportSecurity(31536000, true, true)
 
 	addXPoweredByHelmetMiddleware(helmet.Secure(mockNext)).ServeHTTP(rr, r)
@@ -139,6 +142,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderXFrameOptions, "DENY"},
 		{HeaderXPermittedCrossDomainPolicies, PermittedCrossDomainPoliciesAll.String()},
 		{HeaderXPoweredBy, "PHP 4.2.0"},
+		{HeaderReferrerPolicy, "no-referrer, strict-origin-when-cross-origin"},
 		{HeaderStrictTransportSecurity, "max-age=31536000; includeSubDomains; preload"},
 	}
 

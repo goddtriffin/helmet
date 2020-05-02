@@ -15,6 +15,7 @@ type Helmet struct {
 	XFrameOptions                 XFrameOptions
 	XPermittedCrossDomainPolicies XPermittedCrossDomainPolicies
 	XPoweredBy                    *XPoweredBy
+	ReferrerPolicy                *ReferrerPolicy
 	StrictTransportSecurity       *StrictTransportSecurity
 }
 
@@ -30,6 +31,7 @@ func Default() *Helmet {
 		XFrameOptions:                 XFrameOptionsSameOrigin,
 		XPermittedCrossDomainPolicies: "",
 		XPoweredBy:                    NewXPoweredBy(true, ""),
+		ReferrerPolicy:                EmptyReferrerPolicy(),
 		StrictTransportSecurity:       NewStrictTransportSecurity(5184000, true, false),
 	}
 }
@@ -41,6 +43,7 @@ func Empty() *Helmet {
 		ExpectCT:                EmptyExpectCT(),
 		FeaturePolicy:           EmptyFeaturePolicy(),
 		XPoweredBy:              EmptyXPoweredBy(),
+		ReferrerPolicy:          EmptyReferrerPolicy(),
 		StrictTransportSecurity: EmptyStrictTransportSecurity(),
 	}
 }
@@ -57,6 +60,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.XFrameOptions.Header(w)
 		h.XPermittedCrossDomainPolicies.Header(w)
 		h.XPoweredBy.Header(w)
+		h.ReferrerPolicy.Header(w)
 		h.StrictTransportSecurity.Header(w)
 
 		next.ServeHTTP(w, r)
