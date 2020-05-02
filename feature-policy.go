@@ -143,18 +143,14 @@ func (fp *FeaturePolicy) String() string {
 	return fp.cache
 }
 
-// Exists returns whether the Feature-Policy contains any policies.
-func (fp *FeaturePolicy) Exists() bool {
-	if len(fp.policies) == 0 {
-		return false
-	}
-
-	return true
+// Empty returns whether the Feature-Policy is empty.
+func (fp *FeaturePolicy) Empty() bool {
+	return len(fp.policies) == 0
 }
 
 // Header adds the Feature-Policy HTTP security header to the given http.ResponseWriter.
 func (fp *FeaturePolicy) Header(w http.ResponseWriter) {
-	if fp.Exists() {
+	if !fp.Empty() {
 		w.Header().Set(HeaderFeaturePolicy, fp.String())
 	}
 }
