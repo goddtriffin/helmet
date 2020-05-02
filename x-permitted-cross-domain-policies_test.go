@@ -31,20 +31,20 @@ func TestXPermittedCrossDomainPolicies_String(t *testing.T) {
 	}
 }
 
-func TestXPermittedCrossDomainPolicies_Exists(t *testing.T) {
+func TestXPermittedCrossDomainPolicies_Empty(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name                          string
 		xPermittedCrossDomainPolicies XPermittedCrossDomainPolicies
-		expectedExists                bool
+		expectedEmpty                 bool
 	}{
-		{name: "Empty", xPermittedCrossDomainPolicies: "", expectedExists: false},
-		{name: "None", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesNone, expectedExists: true},
-		{name: "Master Only", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesMasterOnly, expectedExists: true},
-		{name: "By Content Type", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesByContentType, expectedExists: true},
-		{name: "By FTP Filename", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesByFTPFilename, expectedExists: true},
-		{name: "All", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesAll, expectedExists: true},
+		{name: "Empty", xPermittedCrossDomainPolicies: "", expectedEmpty: true},
+		{name: "None", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesNone, expectedEmpty: false},
+		{name: "Master Only", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesMasterOnly, expectedEmpty: false},
+		{name: "By Content Type", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesByContentType, expectedEmpty: false},
+		{name: "By FTP Filename", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesByFTPFilename, expectedEmpty: false},
+		{name: "All", xPermittedCrossDomainPolicies: PermittedCrossDomainPoliciesAll, expectedEmpty: false},
 	}
 
 	for _, tc := range testCases {
@@ -52,9 +52,9 @@ func TestXPermittedCrossDomainPolicies_Exists(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			exists := tc.xPermittedCrossDomainPolicies.Exists()
-			if exists != tc.expectedExists {
-				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedExists, exists)
+			exists := tc.xPermittedCrossDomainPolicies.Empty()
+			if exists != tc.expectedEmpty {
+				t.Errorf("Expected: %t\tActual: %t\n", tc.expectedEmpty, exists)
 			}
 		})
 	}

@@ -21,18 +21,14 @@ func (cdp XPermittedCrossDomainPolicies) String() string {
 	return string(cdp)
 }
 
-// Exists returns whether the X-Permitted-Cross-Domain-Policies has been set.
-func (cdp XPermittedCrossDomainPolicies) Exists() bool {
-	if cdp.String() == "" {
-		return false
-	}
-
-	return true
+// Empty returns whether the X-Permitted-Cross-Domain-Policies is empty.
+func (cdp XPermittedCrossDomainPolicies) Empty() bool {
+	return cdp.String() == ""
 }
 
 // Header adds the X-DNS-Prefetch-Control HTTP security header to the given http.ResponseWriter.
 func (cdp XPermittedCrossDomainPolicies) Header(w http.ResponseWriter) {
-	if cdp.Exists() {
+	if !cdp.Empty() {
 		w.Header().Set(HeaderXPermittedCrossDomainPolicies, cdp.String())
 	}
 }
