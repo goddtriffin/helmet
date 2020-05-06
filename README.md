@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/social-media-preview.png" alt="Helmet Gopher" height="300px"/>
+  <img src="docs/social-media-preview-cropped.png" alt="Helmet Gopher" height="300px"/>
 </p>
 
 # Helmet
