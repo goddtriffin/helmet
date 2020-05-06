@@ -1,8 +1,12 @@
-![HelmetJS logo](docs/logo.svg)
+<p align="center">
+  <img src="docs/social-media-preview.png" alt="Helmet Gopher" height="300px"/>
+</p>
 
 # Helmet
 
 HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
+
+Helmet helps you secure your Golang web applications by setting various HTTP security headers. It's not a silver bullet, but it can help!
 
 ## Quick Start
 
@@ -21,16 +25,17 @@ import (
 
 func main() {
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "I love HelmetJS, I wish there was a Go(lang) equivalent...")
+		fmt.Fprintln(w, "I love HelmetJS, I just wish there was a Go(lang) equivalent...")
 	})
 
 	helmet := helmet.Default()
 	http.Handle("/", helmet.Secure(handler))
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 ```
 
-<small>This code sample can be found in `/examples/01-quick-start`</small>
+This code sample can be found in `/examples/01-quick-start`
 
 ## How It Works
 
@@ -50,8 +55,14 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | [Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy)                     |                                                |
 | [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) | `max-age=5184000; includeSubDomains` (60 days) |
 
+You can see more in the [documentation]().
+
 #
 
 Helmet is open source under the [MIT License](https://github.com/MagnusFrater/helmet/blob/master/LICENSE).
 
-Icon by [Hand-Drawn Goods](https://www.iconfinder.com/handdrawngoods), licensed under a [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
+Gopher image by [Renee French](https://reneefrench.blogspot.com/), licensed under [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
+
+Helmet icon by [Hand-Drawn Goods](https://www.iconfinder.com/handdrawngoods), licensed under [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
+
+Gopher + Helmet remix by [Emily Wilson](https://emilywilsondesign.myportfolio.com/), licensed under [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).

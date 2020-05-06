@@ -15,5 +15,6 @@ func main() {
 
 	helmet := helmet.Default()
 	http.Handle("/", helmet.Secure(handler))
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -37,6 +37,7 @@ func TestHelmet_Secure_default(t *testing.T) {
 		{HeaderXPermittedCrossDomainPolicies, ""},
 		{HeaderReferrerPolicy, ""},
 		{HeaderStrictTransportSecurity, "max-age=5184000; includeSubDomains"},
+		{HeaderXXSSProtection, "1; mode=block"},
 	}
 
 	for _, tc := range testCases {
@@ -70,6 +71,15 @@ func TestHelmet_Secure_empty(t *testing.T) {
 		header := resp.Header.Get(HeaderXPoweredBy)
 		if header != "Helmet" {
 			t.Errorf("X-Powered-By is wrong\tExpected: %s\tActual: %s\n", "Helmet", header)
+		}
+	})
+
+	t.Run("X-XSS-Protection", func(t *testing.T) {
+		t.Parallel()
+
+		header := resp.Header.Get(HeaderXXSSProtection)
+		if header != "0" {
+			t.Errorf("X-XSS-Protection is wrong\tExpected: %s\tActual: %s\n", "0", header)
 		}
 	})
 
@@ -125,6 +135,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 	helmet.XPoweredBy = NewXPoweredBy(false, "PHP 4.2.0")
 	helmet.ReferrerPolicy = NewReferrerPolicy(DirectiveNoReferrer, DirectiveStrictOriginWhenCrossOrigin)
 	helmet.StrictTransportSecurity = NewStrictTransportSecurity(31536000, true, true)
+	helmet.XXSSProtection = NewXXSSProtection(true, DirectiveModeBlock, "/report-uri")
 
 	addXPoweredByHelmetMiddleware(helmet.Secure(mockNext)).ServeHTTP(rr, r)
 	resp := rr.Result()
@@ -144,6 +155,7 @@ func TestHelmet_Secure_custom(t *testing.T) {
 		{HeaderXPoweredBy, "PHP 4.2.0"},
 		{HeaderReferrerPolicy, "no-referrer, strict-origin-when-cross-origin"},
 		{HeaderStrictTransportSecurity, "max-age=31536000; includeSubDomains; preload"},
+		{HeaderXXSSProtection, "1; mode=block; report=/report-uri"},
 	}
 
 	for _, tc := range testCases {
