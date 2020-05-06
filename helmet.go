@@ -17,6 +17,7 @@ type Helmet struct {
 	XPoweredBy                    *XPoweredBy
 	ReferrerPolicy                *ReferrerPolicy
 	StrictTransportSecurity       *StrictTransportSecurity
+	XXSSProtection                *XXSSProtection
 }
 
 // Default creates a new Helmet with default settings.
@@ -33,6 +34,7 @@ func Default() *Helmet {
 		XPoweredBy:                    NewXPoweredBy(true, ""),
 		ReferrerPolicy:                EmptyReferrerPolicy(),
 		StrictTransportSecurity:       NewStrictTransportSecurity(5184000, true, false),
+		XXSSProtection:                NewXXSSProtection(true, DirectiveModeBlock, ""),
 	}
 }
 
@@ -45,6 +47,7 @@ func Empty() *Helmet {
 		XPoweredBy:              EmptyXPoweredBy(),
 		ReferrerPolicy:          EmptyReferrerPolicy(),
 		StrictTransportSecurity: EmptyStrictTransportSecurity(),
+		XXSSProtection:          EmptyXXSSProtection(),
 	}
 }
 
@@ -62,6 +65,7 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 		h.XPoweredBy.Header(w)
 		h.ReferrerPolicy.Header(w)
 		h.StrictTransportSecurity.Header(w)
+		h.XXSSProtection.Header(w)
 
 		next.ServeHTTP(w, r)
 	})

@@ -29,7 +29,7 @@ func ExpectCTDirectiveReportURI(reportURI string) ExpectCTDirective {
 }
 
 type (
-	// ExpectCTDirective represents a Expect-CT directive.
+	// ExpectCTDirective represents an Expect-CT directive.
 	ExpectCTDirective string
 
 	// ExpectCT represents the Expect-CT HTTP security header.
