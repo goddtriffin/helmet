@@ -56,7 +56,7 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) | `max-age=5184000; includeSubDomains` (60 days) |
 | [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection)                   | `1; mode=block`                                |
 
-You can see more in the [documentation]().
+You can see more in the [documentation](https://pkg.go.dev/github.com/MagnusFrater/helmet).
 
 #
 
