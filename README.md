@@ -35,7 +35,7 @@ func main() {
 }
 ```
 
-This code sample can be found in `/examples/01-quick-start`
+This code sample can be found in [`/examples/01-quick-start`](https://github.com/MagnusFrater/helmet/blob/master/examples/01-quick-start/main.go).
 
 ## How It Works
 
