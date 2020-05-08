@@ -4,6 +4,8 @@
 
 # Helmet
 
+[![Go Report Card](https://goreportcard.com/badge/MagnusFrater/helmet)](https://goreportcard.com/report/MagnusFrater/helmet)
+
 HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
 Helmet helps you secure your Golang web applications by setting various HTTP security headers. It's not a silver bullet, but it can help!
