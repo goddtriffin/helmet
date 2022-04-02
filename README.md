@@ -10,6 +10,8 @@ HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by
 
 Helmet helps you secure your Golang web applications by setting various HTTP security headers. It's not a silver bullet, but it can help!
 
+**Project is under active maintenance - even if there are no recent commits! Please submit an issue / bug request if you the library needs updating for any reason!**
+
 ## Quick Start
 
 `go get github.com/MagnusFrater/helmet`
@@ -22,7 +24,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/MagnusFrater/helmet"
+	"github.com/goddtriffin/helmet"
 )
 
 func main() {
@@ -37,7 +39,7 @@ func main() {
 }
 ```
 
-This code sample can be found in [`/examples/01-quick-start`](https://github.com/MagnusFrater/helmet/blob/master/examples/01-quick-start/main.go).
+This code sample can be found in [`/examples/01-quick-start/`](https://github.com/MagnusFrater/helmet/blob/master/examples/01-quick-start/main.go).
 
 ## How It Works
 
