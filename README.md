@@ -14,7 +14,7 @@ Helmet helps you secure your Golang web applications by setting various HTTP sec
 
 ## Quick Start
 
-`go get github.com/MagnusFrater/helmet`
+`go get github.com/goddtriffin/helmet`
 
 ```go
 package main
