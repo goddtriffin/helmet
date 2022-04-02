@@ -1,3 +1,3 @@
-module github.com/MagnusFrater/helmet
+module github.com/goddtriffin/helmet
 
-go 1.14
+go 1.18

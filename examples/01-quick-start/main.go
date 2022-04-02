@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/MagnusFrater/helmet"
+	"github.com/goddtriffin/helmet"
 )
 
 func main() {
