@@ -22,10 +22,9 @@ const (
 	DirectiveExecutionWhileNotRendered   FeaturePolicyDirective = "execution-while-not-rendered"
 	DirectiveExecutionWhileOutOfViewport FeaturePolicyDirective = "execution-while-out-of-viewport"
 	DirectiveFullscreen                  FeaturePolicyDirective = "fullscreen"
+	DirectiveGamepad                     FeaturePolicyDirective = "gamepad"
 	DirectiveGeolocation                 FeaturePolicyDirective = "geolocation"
 	DirectiveGyroscope                   FeaturePolicyDirective = "gyroscope"
-	DirectiveLayoutAnimations            FeaturePolicyDirective = "layout-animations"
-	DirectiveLegacyImageFormats          FeaturePolicyDirective = "legacy-image-formats"
 	DirectiveMagnetometer                FeaturePolicyDirective = "magnetometer"
 	DirectiveMicrophone                  FeaturePolicyDirective = "microphone"
 	DirectiveMidi                        FeaturePolicyDirective = "midi"
@@ -33,15 +32,22 @@ const (
 	DirectiveOversizedImages             FeaturePolicyDirective = "oversized-images"
 	DirectivePayment                     FeaturePolicyDirective = "payment"
 	DirectivePictureInPicture            FeaturePolicyDirective = "picture-in-picture"
-	DirectivePublicKeyCredentials        FeaturePolicyDirective = "publickey-credentials"
+	DirectivePublicKeyCredentialsGet     FeaturePolicyDirective = "publickey-credentials-get"
+	DirectiveSpeakerSelection            FeaturePolicyDirective = "speaker-selection"
 	DirectiveSyncXHR                     FeaturePolicyDirective = "sync-xhr"
 	DirectiveUSB                         FeaturePolicyDirective = "usb"
-	DirectiveWakeLock                    FeaturePolicyDirective = "wake-lock"
+	DirectiveScreenWakeLock              FeaturePolicyDirective = "screen-wake-lock"
+	DirectiveWebShare                    FeaturePolicyDirective = "web-share"
 	DirectiveXRSpacialTracking           FeaturePolicyDirective = "xr-spatial-tracking"
+)
 
-	// deprecated
-	DeprecatedDirectiveVibrate FeaturePolicyDirective = "vibrate"
-	DeprecatedDirectiveVR      FeaturePolicyDirective = "vr"
+// deprecated
+const (
+	NonStandardDirectiveLayoutAnimations   FeaturePolicyDirective = "layout-animations"
+	NonStandardDirectiveLegacyImageFormats FeaturePolicyDirective = "legacy-image-formats"
+	NonStandardDirectiveOversizedImages    FeaturePolicyDirective = "oversized-images"
+	NonStandardDirectiveUnoptimizedImages  FeaturePolicyDirective = "unoptimized-images"
+	NonStandardDirectiveUnsizedMedia       FeaturePolicyDirective = "unsized-media"
 )
 
 // List of all Feature-Policy origins.
