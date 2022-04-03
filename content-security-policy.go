@@ -9,58 +9,78 @@ import (
 // HeaderContentSecurityPolicy is the Content-Security-Policy HTTP security header.
 const HeaderContentSecurityPolicy = "Content-Security-Policy"
 
-// List of all Content-Security-Policy directives.
+// List of all Content-Security-Policy Fetch directives.
 const (
-	DirectiveBaseURI                 CSPDirective = "base-uri"
-	DirectiveBlockAllMixedContent    CSPDirective = "block-all-mixed-content"
-	DirectiveChildSrc                CSPDirective = "child-src"
-	DirectiveConnectSrc              CSPDirective = "connect-src"
-	DirectiveDefaultSrc              CSPDirective = "default-src"
-	DirectiveFontSrc                 CSPDirective = "font-src"
-	DirectiveFormAction              CSPDirective = "form-action"
-	DirectiveFrameAncestors          CSPDirective = "frame-ancestors"
-	DirectiveFrameSrc                CSPDirective = "frame-src"
-	DirectiveImgSrc                  CSPDirective = "img-src"
-	DirectiveManifestSrc             CSPDirective = "manifest-src"
-	DirectiveMediaSrc                CSPDirective = "media-src"
-	DirectiveNavigateTo              CSPDirective = "navigate-to"
-	DirectiveObjectSrc               CSPDirective = "object-src"
-	DirectivePluginTypes             CSPDirective = "plugin-types"
-	DirectivePrefetchSrc             CSPDirective = "prefetch-src"
-	DirectiveReportTo                CSPDirective = "report-to"
-	DirectiveSandbox                 CSPDirective = "sandbox"
-	DirectiveScriptSrc               CSPDirective = "script-src"
-	DirectiveScriptSrcAttr           CSPDirective = "script-src-attr"
-	DirectiveScriptSrcElem           CSPDirective = "script-src-elem"
-	DirectiveStyleSrc                CSPDirective = "style-src"
-	DirectiveStyleSrcAttr            CSPDirective = "style-src-attr"
-	DirectiveStyleSrcElem            CSPDirective = "style-src-elem"
+	DirectiveChildSrc      CSPDirective = "child-src"
+	DirectiveConnectSrc    CSPDirective = "connect-src"
+	DirectiveDefaultSrc    CSPDirective = "default-src"
+	DirectiveFontSrc       CSPDirective = "font-src"
+	DirectiveFrameSrc      CSPDirective = "frame-src"
+	DirectiveImgSrc        CSPDirective = "img-src"
+	DirectiveManifestSrc   CSPDirective = "manifest-src"
+	DirectiveMediaSrc      CSPDirective = "media-src"
+	DirectiveObjectSrc     CSPDirective = "object-src"
+	DirectivePrefetchSrc   CSPDirective = "prefetch-src"
+	DirectiveScriptSrc     CSPDirective = "script-src"
+	DirectiveScriptSrcAttr CSPDirective = "script-src-attr"
+	DirectiveScriptSrcElem CSPDirective = "script-src-elem"
+	DirectiveStyleSrc      CSPDirective = "style-src"
+	DirectiveStyleSrcAttr  CSPDirective = "style-src-attr"
+	DirectiveStyleSrcElem  CSPDirective = "style-src-elem"
+	DirectiveWorkerSrc     CSPDirective = "worker-src"
+)
+
+// List of all Content-Security-Policy Document directives.
+const (
+	DirectiveBaseURI CSPDirective = "base-uri"
+	DirectiveSandbox CSPDirective = "sandbox"
+)
+
+// List of all Content-Security-Policy Navigation directives.
+const (
+	DirectiveFormAction     CSPDirective = "form-action"
+	DirectiveFrameAncestors CSPDirective = "frame-ancestors"
+	DirectiveNavigateTo     CSPDirective = "navigate-to"
+)
+
+// List of all Content-Security-Policy Reporting directives.
+const (
+	DirectiveReportTo            CSPDirective = "report-to"
+	DeprecatedDirectiveReportURI CSPDirective = "report-uri" // use 'report-to' Content-Security-Policy directive instead
+)
+
+// List of all Content-Security-Policy Other directives.
+const (
+	DirectiveRequireSriFor           CSPDirective = "require-sri-for"
+	DirectiveRequireTrustedTypesFor  CSPDirective = "require-trusted-types-for"
 	DirectiveTrustedTypes            CSPDirective = "trusted-types"
 	DirectiveUpgradeInsecureRequests CSPDirective = "upgrade-insecure-requests"
-	DirectiveWorkerSrc               CSPDirective = "worker-src"
+)
 
-	// deprecated
-	DeprecatedDirectiveReferrer      CSPDirective = "referrer"   // use 'Referrer-Policy' HTTP header instead
-	DeprecatedDirectiveReportURI     CSPDirective = "report-uri" // use 'report-to' Content-Security-Policy directive instead
-	DeprecatedDirectiveRequireSriFor CSPDirective = "require-sri-for"
+// List of all Content-Security-Policy Deprecated directives.
+const (
+	DeprecatedDirectiveBlockAllMixedContent CSPDirective = "block-all-mixed-content"
+	DeprecatedDirectivePluginTypes          CSPDirective = "plugin-types"
+	DeprecatedDirectiveReferrer             CSPDirective = "referrer" // use 'Referrer-Policy' HTTP header instead
 )
 
 // List of all Content-Security-Policy sources.
 const (
-	SourceWildcard      CSPSource = "*"
-	SourceNone          CSPSource = "'none'"
-	SourceSelf          CSPSource = "'self'"
-	SourceHTTP          CSPSource = "http:"
-	SourceHTTPS         CSPSource = "https:"
-	SourceData          CSPSource = "data:"
-	SourceMediastream   CSPSource = "mediastream:"
-	SourceBlob          CSPSource = "blob:"
-	SourceFilesystem    CSPSource = "filesystem:"
-	SourceUnsafeEval    CSPSource = "'unsafe-eval'"
-	SourceUnsafeHashes  CSPSource = "'unsafe-hashes'"
-	SourceUnsafeInline  CSPSource = "'unsafe-inline'"
-	SourceStrictDynamic CSPSource = "'strict-dynamic'"
-	SourceReportSample  CSPSource = "'report-sample'"
+	SourceWildcard             CSPSource = "*"
+	SourceNone                 CSPSource = "'none'"
+	SourceSelf                 CSPSource = "'self'"
+	SourceHTTP                 CSPSource = "http:"
+	SourceHTTPS                CSPSource = "https:"
+	SourceData                 CSPSource = "data:"
+	SourceMediastream          CSPSource = "mediastream:"
+	SourceBlob                 CSPSource = "blob:"
+	SourceFilesystem           CSPSource = "filesystem:"
+	SourceUnsafeAllowRedirects CSPSource = "'unsafe-allow-redirects'"
+	SourceUnsafeEval           CSPSource = "'unsafe-eval'"
+	SourceUnsafeHashes         CSPSource = "'unsafe-hashes'"
+	SourceUnsafeInline         CSPSource = "'unsafe-inline'"
+	SourceStrictDynamic        CSPSource = "'strict-dynamic'"
+	SourceReportSample         CSPSource = "'report-sample'"
 )
 
 // List of all DeprecatedDirectiveReferrer values.
@@ -75,6 +95,7 @@ const (
 
 // List of all DirectiveSandbox values.
 const (
+	SandboxAllowDownloads                       CSPSource = "allow-downloads"
 	SandboxAllowDownloadsWithoutUserActivation  CSPSource = "allow-downloads-without-user-activation"
 	SandboxAllowForms                           CSPSource = "allow-forms"
 	SandboxAllowModals                          CSPSource = "allow-modals"
