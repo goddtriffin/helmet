@@ -4,7 +4,7 @@
 
 # Helmet
 
-[![Go Report Card](https://goreportcard.com/badge/MagnusFrater/helmet)](https://goreportcard.com/report/MagnusFrater/helmet)
+[![Go Report Card](https://goreportcard.com/badge/goddtriffin/helmet)](https://goreportcard.com/report/goddtriffin/helmet)
 
 HTTP security headers middleware for [Go(lang)](https://golang.org/) inspired by [HelmetJS](https://helmetjs.github.io/).
 
@@ -13,6 +13,9 @@ Helmet helps you secure your Golang web applications by setting various HTTP sec
 **Project is under active maintenance - even if there are no recent commits! Please submit an issue / bug request if you the library needs updating for any reason!**
 
 ## Quick Start
+
+You can see more in the [documentation](https://pkg.go.dev/github.com/goddtriffin/helmet).
+
 
 `go get github.com/goddtriffin/helmet`
 
@@ -39,7 +42,7 @@ func main() {
 }
 ```
 
-This code sample can be found in [`/examples/01-quick-start/`](https://github.com/MagnusFrater/helmet/blob/master/examples/01-quick-start/main.go).
+This code sample can be found in [`/examples/01-quick-start/`](https://github.com/goddtriffin/helmet/blob/master/examples/01-quick-start/main.go).
 
 ## How It Works
 
@@ -60,11 +63,11 @@ Helmet is a collection of 12 smaller middleware functions that set HTTP security
 | [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) | `max-age=5184000; includeSubDomains` (60 days) |
 | [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection)                   | `1; mode=block`                                |
 
-You can see more in the [documentation](https://pkg.go.dev/github.com/MagnusFrater/helmet).
+## Credits
 
-#
+Made with 🤬 and 🥲 by [Todd Everett Griffin](https://www.toddgriffin.me/)
 
-Helmet is open source under the [MIT License](https://github.com/MagnusFrater/helmet/blob/master/LICENSE).
+Helmet is open source under the [MIT License](https://github.com/goddtriffin/helmet/blob/master/LICENSE).
 
 Gopher image by [Renee French](https://reneefrench.blogspot.com/), licensed under [CC 3.0 license](https://creativecommons.org/licenses/by/3.0/).
 
