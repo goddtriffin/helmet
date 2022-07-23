@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderFeaturePolicy is the Feature-Policy HTTP security header.
@@ -135,7 +137,7 @@ func (fp *FeaturePolicy) String() string {
 		return fp.cache
 	}
 
-	var policies = []string{}
+	policies := []string{}
 	for directive, origins := range fp.policies {
 		originsAsStrings := []string{}
 		for _, origin := range origins {
@@ -158,5 +160,12 @@ func (fp *FeaturePolicy) Empty() bool {
 func (fp *FeaturePolicy) Header(w http.ResponseWriter) {
 	if !fp.Empty() {
 		w.Header().Set(HeaderFeaturePolicy, fp.String())
+	}
+}
+
+// HeaderFastHTTP adds the Feature-Policy HTTP security header to the given *fasthttp.RequestCtx.
+func (fp *FeaturePolicy) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !fp.Empty() {
+		ctx.Response.Header.Set(HeaderFeaturePolicy, fp.String())
 	}
 }

@@ -1,5 +1,6 @@
 # directories
 .idea/
+.vscode/
 
 # files
 .DS_Store

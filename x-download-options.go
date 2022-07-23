@@ -1,6 +1,10 @@
 package helmet
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/valyala/fasthttp"
+)
 
 // HeaderXDownloadOptions is the X-Download-Options HTTP header.
 const HeaderXDownloadOptions = "X-Download-Options"
@@ -24,5 +28,12 @@ func (xdo XDownloadOptions) Empty() bool {
 func (xdo XDownloadOptions) Header(w http.ResponseWriter) {
 	if !xdo.Empty() {
 		w.Header().Set(HeaderXDownloadOptions, xdo.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-Download-Options HTTP security header to the given *fasthttp.RequestCtx.
+func (xdo XDownloadOptions) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !xdo.Empty() {
+		ctx.Response.Header.Set(HeaderXDownloadOptions, xdo.String())
 	}
 }

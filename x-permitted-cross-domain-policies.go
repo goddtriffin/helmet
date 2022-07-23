@@ -1,6 +1,10 @@
 package helmet
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/valyala/fasthttp"
+)
 
 // HeaderXPermittedCrossDomainPolicies is the X-Permitted-Cross-Domain-Policies HTTP security header.
 const HeaderXPermittedCrossDomainPolicies = "X-Permitted-Cross-Domain-Policies"
@@ -30,5 +34,12 @@ func (cdp XPermittedCrossDomainPolicies) Empty() bool {
 func (cdp XPermittedCrossDomainPolicies) Header(w http.ResponseWriter) {
 	if !cdp.Empty() {
 		w.Header().Set(HeaderXPermittedCrossDomainPolicies, cdp.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-DNS-Prefetch-Control HTTP security header to the given *fasthttp.RequestCtx.
+func (cdp XPermittedCrossDomainPolicies) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !cdp.Empty() {
+		ctx.Response.Header.Set(HeaderXPermittedCrossDomainPolicies, cdp.String())
 	}
 }

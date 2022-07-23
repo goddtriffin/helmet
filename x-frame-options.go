@@ -1,6 +1,10 @@
 package helmet
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/valyala/fasthttp"
+)
 
 // HeaderXFrameOptions is the X-Frame-Options HTTP security header.
 const HeaderXFrameOptions = "X-Frame-Options"
@@ -27,5 +31,12 @@ func (xfo XFrameOptions) Empty() bool {
 func (xfo XFrameOptions) Header(w http.ResponseWriter) {
 	if !xfo.Empty() {
 		w.Header().Set(HeaderXFrameOptions, xfo.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-Frame-Options HTTP header to the given *fasthttp.RequestCtx.
+func (xfo XFrameOptions) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !xfo.Empty() {
+		ctx.Response.Header.Set(HeaderXFrameOptions, xfo.String())
 	}
 }

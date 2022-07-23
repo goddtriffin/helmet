@@ -1,6 +1,10 @@
 package helmet
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/valyala/fasthttp"
+)
 
 // HeaderXContentTypeOptions is the X-Content-Type-Options HTTP header.
 const HeaderXContentTypeOptions = "X-Content-Type-Options"
@@ -24,5 +28,12 @@ func (xcto XContentTypeOptions) Empty() bool {
 func (xcto XContentTypeOptions) Header(w http.ResponseWriter) {
 	if !xcto.Empty() {
 		w.Header().Set(HeaderXContentTypeOptions, xcto.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-Content-Type-Options HTTP security header to the given *fasthttp.RequestCtx.
+func (xcto XContentTypeOptions) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !xcto.Empty() {
+		ctx.Response.Header.Set(HeaderXContentTypeOptions, xcto.String())
 	}
 }

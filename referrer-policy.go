@@ -3,6 +3,8 @@ package helmet
 import (
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderReferrerPolicy is the Referrer-Policy HTTP security header.
@@ -71,5 +73,12 @@ func (rp *ReferrerPolicy) Empty() bool {
 func (rp *ReferrerPolicy) Header(w http.ResponseWriter) {
 	if !rp.Empty() {
 		w.Header().Set(HeaderReferrerPolicy, rp.String())
+	}
+}
+
+// HeaderFastHTTP adds the Referrer-Policy HTTP header to the given *fasthttp.RequestCtx.
+func (rp *ReferrerPolicy) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !rp.Empty() {
+		ctx.Response.Header.Set(HeaderReferrerPolicy, rp.String())
 	}
 }

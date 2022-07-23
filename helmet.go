@@ -2,6 +2,8 @@ package helmet
 
 import (
 	"net/http"
+
+	"github.com/valyala/fasthttp"
 )
 
 // Helmet is a HTTP security middleware for Go(lang) inspired by HelmetJS for Express.js.
@@ -51,7 +53,7 @@ func Empty() *Helmet {
 	}
 }
 
-// Secure is the middleware handler.
+// Secure is the net/http middleware handler.
 func (h *Helmet) Secure(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h.ContentSecurityPolicy.Header(w)
@@ -69,4 +71,24 @@ func (h *Helmet) Secure(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+// SecureFastHTTP is the fasthttp middleware handler.
+func (h *Helmet) SecureFastHTTP(next fasthttp.RequestHandler) fasthttp.RequestHandler {
+	return func(ctx *fasthttp.RequestCtx) {
+		h.ContentSecurityPolicy.HeaderFastHTTP(ctx)
+		h.XContentTypeOptions.HeaderFastHTTP(ctx)
+		h.XDNSPrefetchControl.HeaderFastHTTP(ctx)
+		h.XDownloadOptions.HeaderFastHTTP(ctx)
+		h.ExpectCT.HeaderFastHTTP(ctx)
+		h.FeaturePolicy.HeaderFastHTTP(ctx)
+		h.XFrameOptions.HeaderFastHTTP(ctx)
+		h.XPermittedCrossDomainPolicies.HeaderFastHTTP(ctx)
+		h.XPoweredBy.HeaderFastHTTP(ctx)
+		h.ReferrerPolicy.HeaderFastHTTP(ctx)
+		h.StrictTransportSecurity.HeaderFastHTTP(ctx)
+		h.XXSSProtection.HeaderFastHTTP(ctx)
+
+		next(ctx)
+	}
 }
