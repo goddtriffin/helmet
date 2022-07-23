@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderContentSecurityPolicy is the Content-Security-Policy HTTP security header.
@@ -193,7 +195,7 @@ func (csp *ContentSecurityPolicy) String() string {
 		return csp.cache
 	}
 
-	var policies = []string{}
+	policies := []string{}
 	for directive, sources := range csp.policies {
 		if len(sources) == 0 {
 			policies = append(policies, fmt.Sprintf("%s", directive))
@@ -220,5 +222,12 @@ func (csp *ContentSecurityPolicy) Empty() bool {
 func (csp *ContentSecurityPolicy) Header(w http.ResponseWriter) {
 	if !csp.Empty() {
 		w.Header().Set(HeaderContentSecurityPolicy, csp.String())
+	}
+}
+
+// HeaderFastHTTP adds the Content-Security-Policy HTTP security header to the given *fasthttp.RequestCtx.
+func (csp *ContentSecurityPolicy) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !csp.Empty() {
+		ctx.Response.Header.Set(HeaderContentSecurityPolicy, csp.String())
 	}
 }

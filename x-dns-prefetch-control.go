@@ -1,6 +1,10 @@
 package helmet
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/valyala/fasthttp"
+)
 
 // HeaderXDNSPrefetchControl is the X-DNS-Prefetch-Control HTTP header.
 const HeaderXDNSPrefetchControl = "X-DNS-Prefetch-Control"
@@ -27,5 +31,12 @@ func (dns XDNSPrefetchControl) Empty() bool {
 func (dns XDNSPrefetchControl) Header(w http.ResponseWriter) {
 	if !dns.Empty() {
 		w.Header().Set(HeaderXDNSPrefetchControl, dns.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-DNS-Prefetch-Control HTTP security header to the given *fasthttp.RequestCtx.
+func (dns XDNSPrefetchControl) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !dns.Empty() {
+		ctx.Response.Header.Set(HeaderXDNSPrefetchControl, dns.String())
 	}
 }

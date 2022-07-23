@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderStrictTransportSecurity is the Strict-Transport-Security HTTP security header.
@@ -93,5 +95,12 @@ func (hsts *StrictTransportSecurity) Empty() bool {
 func (hsts *StrictTransportSecurity) Header(w http.ResponseWriter) {
 	if !hsts.Empty() {
 		w.Header().Set(HeaderStrictTransportSecurity, hsts.String())
+	}
+}
+
+// HeaderFastHTTP adds the Strict-Transport-Security HTTP security header to the given *fasthttp.RequestCtx.
+func (hsts *StrictTransportSecurity) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !hsts.Empty() {
+		ctx.Response.Header.Set(HeaderStrictTransportSecurity, hsts.String())
 	}
 }

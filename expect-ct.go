@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderExpectCT is the Expect-CT HTTP security header.
@@ -93,5 +95,12 @@ func (ect *ExpectCT) Empty() bool {
 func (ect *ExpectCT) Header(w http.ResponseWriter) {
 	if !ect.Empty() {
 		w.Header().Set(HeaderExpectCT, ect.String())
+	}
+}
+
+// HeaderFastHTTP adds the Expect-CT HTTP security header to the given *fasthttp.RequestCtx.
+func (ect *ExpectCT) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !ect.Empty() {
+		ctx.Response.Header.Set(HeaderExpectCT, ect.String())
 	}
 }

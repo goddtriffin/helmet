@@ -16,8 +16,9 @@ Helmet helps you secure your Golang web applications by setting various HTTP sec
 
 You can see more in the [documentation](https://pkg.go.dev/github.com/goddtriffin/helmet).
 
-
 `go get github.com/goddtriffin/helmet`
+
+### With net/http
 
 ```go
 package main
@@ -43,6 +44,36 @@ func main() {
 ```
 
 This code sample can be found in [`/examples/01-quick-start/`](https://github.com/goddtriffin/helmet/blob/master/examples/01-quick-start/main.go).
+
+### With fasthttp
+
+```go
+package main
+
+import (
+	"github.com/fasthttp/router"
+	"github.com/goddtriffin/helmet"
+	"github.com/valyala/fasthttp"
+)
+
+func main() {
+	r := router.New()
+
+	r.GET("/", func(ctx *fasthttp.RequestCtx) {
+		ctx.WriteString("I love HelmetJS, I just wish there was a Go(lang) equivalent...")
+	})
+
+	h := helmet.Default()
+
+	httpServer := fasthttp.Server{
+		Handler: h.SecureFastHTTP(r.Handler),
+	}
+
+	httpServer.ListenAndServe(":8080")
+}
+```
+
+This code sample can be found in [`/examples/01-quick-start-fasthttp/`](https://github.com/goddtriffin/helmet/blob/master/examples/01-quick-start-fasthttp/main.go).
 
 ## How It Works
 

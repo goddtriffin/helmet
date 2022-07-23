@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 // HeaderXXSSProtection is the X-XSS-Protection HTTP security header.
@@ -88,5 +90,12 @@ func (xssp *XXSSProtection) Empty() bool {
 func (xssp *XXSSProtection) Header(w http.ResponseWriter) {
 	if !xssp.Empty() {
 		w.Header().Set(HeaderXXSSProtection, xssp.String())
+	}
+}
+
+// HeaderFastHTTP adds the X-XSS-Protection HTTP security header to the given *fasthttp.RequestCtx.
+func (xssp *XXSSProtection) HeaderFastHTTP(ctx *fasthttp.RequestCtx) {
+	if !xssp.Empty() {
+		ctx.Response.Header.Set(HeaderXXSSProtection, xssp.String())
 	}
 }
